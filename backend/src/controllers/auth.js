@@ -54,12 +54,7 @@ exports.signup = async (req, res) => {
       console.warn('Failed to send verification email during signup:', err);
     }
 
-    // Automatically create empty portfolio
-    await prisma.portfolio.create({
-      data: {
-        user_id: newUser.id,
-      }
-    });
+
 
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '1d' });
 
@@ -109,7 +104,7 @@ exports.getMe = async (req, res) => {
       where: { id: req.user.id },
       include: {
         _count: {
-          select: { projects: true, startup_ideas: true }
+          select: { projects: true }
         }
       }
     });
@@ -128,22 +123,8 @@ exports.getMe = async (req, res) => {
 
     // Calculate Dynamic Achievements
     const achievements = [];
-    if (user._count.startup_ideas >= 1) {
-      achievements.push({ title: "Visionary Founder", date: "Verified", icon: "Rocket", color: "text-amber-500" });
-    }
     if (user._count.projects >= 3) {
       achievements.push({ title: "Product Builder", date: "Verified", icon: "Briefcase", color: "text-primary" });
-    }
-    const connectionsCount = await prisma.connection.count({
-      where: {
-        OR: [
-          { sender_id: user.id, status: 'accepted' },
-          { receiver_id: user.id, status: 'accepted' }
-        ]
-      }
-    });
-    if (connectionsCount >= 10) {
-      achievements.push({ title: "Community Pillar", date: "Verified", icon: "Users", color: "text-emerald-500" });
     }
 
     const data = {

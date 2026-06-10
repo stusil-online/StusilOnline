@@ -151,6 +151,7 @@ exports.deleteProject = async (req, res) => {
     await prisma.projectRole.deleteMany({ where: { project_id: req.params.id } });
     await prisma.projectMessage.deleteMany({ where: { project_id: req.params.id } });
     await prisma.collabRequest.deleteMany({ where: { project_id: req.params.id } });
+    await prisma.fileModel.deleteMany({ where: { project_id: req.params.id } });
     await prisma.projectMember.deleteMany({ where: { project_id: req.params.id } });
     await prisma.project.delete({ where: { id: req.params.id } });
 
@@ -367,13 +368,13 @@ exports.removeMember = async (req, res) => {
     }
 
     // Notify the removed user
-    await createNotification(
-      member.user_id,
-      'project_removed',
-      'Team Update',
-      `You have been removed from the project: ${project.title}`,
-      `/projects`
-    );
+    const io = req.app.get('io');
+    await createNotification(io, member.user_id, {
+      type: 'project_removed',
+      title: 'Team Update',
+      body: `You have been removed from the project: ${project.title}`,
+      link: `/projects`
+    });
 
     await prisma.projectMember.delete({ where: { id: memberId } });
     res.json({ message: 'Member removed successfully' });

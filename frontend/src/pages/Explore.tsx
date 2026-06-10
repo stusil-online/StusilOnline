@@ -12,7 +12,7 @@ const publicProjects = [
   { id: 3, title: "Carbon Tracker", author: "Aisha Patel", tags: ["IoT", "Data"], likes: 18, desc: "Track campus carbon footprint.", color: "from-amber-500 to-orange-500" },
 ];
 
-const startupIdeas = [
+const featuredProjects = [
   { title: "EduFi — Student Micro-Lending", seeking: "Co-Founder (Business)", author: "Jake W." },
   { title: "LabSync — Research Collab Tool", seeking: "Full-Stack Dev", author: "Nina K." },
   { title: "FreshBites — Sustainable Food", seeking: "UX Designer", author: "Tom N." },
@@ -58,7 +58,7 @@ export default function Explore() {
           <span className="text-gradient">meet skills</span>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground leading-relaxed">
-          Find teammates, build real projects, and launch startups — all while you're still in school.
+          Find teammates, build real projects, and launch ventures — all while you're still in school.
         </p>
         <div className="mt-8 flex items-center justify-center gap-4">
           <Link to="/join" className="glow-button flex items-center gap-2 text-sm">
@@ -74,7 +74,7 @@ export default function Explore() {
           {[
             { num: "500+", label: "Students" },
             { num: "120+", label: "Projects" },
-            { num: "30+", label: "Startups" },
+            { num: "30+", label: "Ventures" },
           ].map((s) => (
             <div key={s.label}>
               <p className="heading-tight text-2xl font-bold text-foreground">{s.num}</p>
@@ -113,11 +113,11 @@ export default function Explore() {
         </div>
       </section>
 
-      {/* Startup Ideas */}
+      {/* Featured Projects */}
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24">
-        <h2 className="heading-tight mb-8 text-2xl font-bold text-foreground">Startup Ideas Looking for Co-Founders</h2>
+        <h2 className="heading-tight mb-8 text-2xl font-bold text-foreground">Featured Projects Looking for Members</h2>
         <div className="space-y-3">
-          {startupIdeas.map((s, i) => (
+          {featuredProjects.map((s, i) => (
             <motion.div
               key={s.title}
               initial={{ opacity: 0, x: -20 }}

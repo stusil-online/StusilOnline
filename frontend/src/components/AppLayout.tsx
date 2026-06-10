@@ -33,7 +33,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem("sidebar_collapsed");
     return saved === "true";
   });
-  const [user, setUser] = useState<{ id: string; full_name: string; username: string; email: string } | null>(null);
+  const [user, setUser] = useState<any | null>(() => {
+    try {
+      const saved = localStorage.getItem("user_cache");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,7 +52,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("user_cache");
     toast.success("Logged out successfully");
     navigate("/login");
   };
@@ -57,12 +64,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       try {
         const data = await getApiData("/api/v1/auth/me");
         setUser(data);
+        localStorage.setItem("user_cache", JSON.stringify(data));
         
-        // Global redirect for Admin email to stay in Admin sections
+        // Allow Admin users to access all non-admin pages normally
         const adminPaths = ["/admin", "/settings", "/messages", "/logout"];
-        if (data && data.email === 'stusil.org@gmail.com' && !adminPaths.some(p => location.pathname.startsWith(p))) {
-           navigate("/admin");
-        }
+        // Redirection removed so admins can browse the platform normally!
       } catch (err) {
         console.error("Error fetching user in layout:", err);
       }
@@ -117,7 +123,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between border-b border-border/30 bg-background/80 px-4 py-3 backdrop-blur-xl lg:hidden">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/5 overflow-hidden">
-             <img src="/favicon.ico" alt="Logo" className="h-4 w-4 object-contain" />
+             <img src="/logo.png" alt="Logo" className="h-4 w-4 object-contain" />
           </div>
           <span className="text-sm font-bold tracking-tight text-foreground uppercase tracking-widest">STUSIL</span>
         </div>
@@ -139,7 +145,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             className="fixed inset-x-0 top-14 z-30 border-b border-border/30 bg-card/95 backdrop-blur-xl lg:hidden"
           >
             <nav className="space-y-1 p-3">
-              {(user?.email === 'stusil.org@gmail.com' ? adminMobileNavItems : mobileNavItems).map((item) => (
+              {((user?.role === 'admin' || user?.email === 'stusil.online@gmail.com') ? adminMobileNavItems : mobileNavItems).map((item) => (
                 <button
                   key={item.label}
                   onClick={() => { navigate(item.path); setMobileOpen(false); }}

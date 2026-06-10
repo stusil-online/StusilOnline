@@ -25,7 +25,7 @@ export default function Login() {
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        if (data.user?.email === 'stusil.org@gmail.com') {
+        if (data.user?.role === 'admin' || data.user?.email === 'stusil.online@gmail.com') {
           navigate("/admin");
         } else {
           navigate("/dashboard");
@@ -54,7 +54,7 @@ export default function Login() {
           {/* Logo */}
           <div className="mb-8 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/5 overflow-hidden border border-border/30">
-              <img src="/favicon.ico" alt="Stusil Logo" className="h-6 w-6 object-contain" />
+              <img src="/logo.png" alt="Stusil Logo" className="h-6 w-6 object-contain" />
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground uppercase tracking-widest">STUSIL</span>
           </div>

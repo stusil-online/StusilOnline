@@ -29,7 +29,7 @@ const sectionsBase = [
     id: "social",
     title: "Cyber Connections",
     icon: Globe,
-    description: "Sync your external profiles and portfolios.",
+    description: "Sync your external profiles.",
     fields: [
       { label: "GitHub Hub", key: "github", type: "text", placeholder: "https://github.com/yourusername" },
       { label: "LinkedIn Link", key: "linkedin", type: "text", placeholder: "https://linkedin.com/in/yourusername" },

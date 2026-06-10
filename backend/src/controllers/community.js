@@ -22,24 +22,6 @@ exports.getTrending = async (req, res) => {
       }
     });
 
-    // Hot Ideas: Highest number of applications
-    // Since we can't directly order by relation count in a simple findMany easily in all prisma versions/setups without aggregation
-    // We'll fetch startups and sort them by the length of applications array (or use _count if available)
-    const hotIdeas = await prisma.startupIdea.findMany({
-      take: 3,
-      include: {
-        _count: {
-          select: { applications: true }
-        },
-        creator: { select: { full_name: true, username: true } }
-      },
-      orderBy: {
-        applications: {
-          _count: 'desc'
-        }
-      }
-    });
-
     // Top 3 Students for mini-leaderboard
     const topStudentsData = await prisma.user.findMany({
       take: 20,
@@ -48,26 +30,20 @@ exports.getTrending = async (req, res) => {
         full_name: true,
         username: true,
         profile_image: true,
-        _count: { select: { projects: true, startups: true } }
+        _count: { select: { projects: true } }
       }
     });
 
     const topStudents = topStudentsData
-      .sort((a, b) => (b._count.projects + b._count.startups) - (a._count.projects + a._count.startups))
+      .sort((a, b) => b._count.projects - a._count.projects)
       .slice(0, 3);
 
     res.json({
       trendingProjects,
-      hotIdeas: hotIdeas.map(idea => ({
-        id: idea.id,
-        title: idea.title,
-        field: idea.field,
-        joinRequests: idea._count.applications,
-        creator: idea.creator
-      })),
+      hotIdeas: [], // Kept as empty array to avoid breaking frontend immediately
       topStudents: topStudents.map(s => ({
         ...s,
-        xp: (s._count.projects + s._count.startups) * 10
+        xp: s._count.projects * 10
       }))
     });
   } catch (error) {
@@ -78,7 +54,7 @@ exports.getTrending = async (req, res) => {
 
 exports.getLeaderboard = async (req, res) => {
   try {
-    // Fetch top 50 users then sort by total contributions (projects + startups)
+    // Fetch top 50 users then sort by total contributions (projects)
     const users = await prisma.user.findMany({
       take: 50,
       select: {
@@ -89,16 +65,16 @@ exports.getLeaderboard = async (req, res) => {
         field_of_study: true,
         country: true,
         _count: {
-          select: { projects: true, startups: true }
+          select: { projects: true }
         }
       }
     });
 
-    // Sort by calculated XP proxy: (projects * 2 + startups * 3) (or just sum)
+    // Sort by calculated XP proxy: (projects * 2)
     const topStudents = users
       .sort((a, b) => {
-        const scoreA = (a._count.projects + a._count.startups);
-        const scoreB = (b._count.projects + b._count.startups);
+        const scoreA = a._count.projects;
+        const scoreB = b._count.projects;
         return scoreB - scoreA;
       })
       .slice(0, 10);

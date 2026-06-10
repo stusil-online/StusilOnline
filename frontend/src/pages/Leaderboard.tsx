@@ -100,14 +100,14 @@ export default function Leaderboard() {
                        </div>
                        <div className="flex items-center gap-4 text-center">
                           <div className="hidden sm:block">
-                             <p className="text-sm font-black text-foreground">{(u._count?.projects || 0) + (u._count?.startups || 0)}</p>
+                             <p className="text-sm font-black text-foreground">{u._count?.projects || 0}</p>
                              <p className="text-[9px] font-bold text-muted-foreground uppercase opacity-60">Ops</p>
                           </div>
                           <div className="w-px h-8 bg-border/50 hidden sm:block" />
                           <div>
                              <div className="flex items-center gap-1.5 bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20">
                                 <Zap className="h-3 w-3 text-primary fill-current" />
-                                <span className="text-xs font-black text-primary">{((u._count?.projects || 0) + (u._count?.startups || 0)) * 10} XP</span>
+                                <span className="text-xs font-black text-primary">{(u._count?.projects || 0) * 10} XP</span>
                              </div>
                           </div>
                        </div>

@@ -166,14 +166,11 @@ export default function Projects() {
     const fetchUser = async () => {
       try {
         const data = await getApiData("/api/v1/auth/me");
-        if (data && data.email === 'stusil.org@gmail.com') {
-          return navigate("/admin");
-        }
         setUser(data);
       } catch (err) { console.error(err); }
     };
     fetchUser();
-  }, [navigate]);
+  }, []);
 
   const fetchProjects = async () => {
     setLoading(true);
@@ -227,6 +224,7 @@ export default function Projects() {
       });
 
       if (res.ok) {
+        toast.success(isEditing ? "Project updated successfully!" : "Project created successfully!");
         await fetchProjects();
         setShowCreate(false);
         setNewProject({ title: "", description: "", field: "", banner_image: "" });
@@ -237,8 +235,19 @@ export default function Projects() {
            const data = await getApiData(`/api/v1/projects/${editingProject.id}`);
            setSelected(data);
         }
+      } else {
+        const text = await res.text();
+        try {
+          const parsed = JSON.parse(text);
+          toast.error(parsed.error || "Failed to save project.");
+        } catch {
+          toast.error("Failed to save project due to a server error.");
+        }
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+      toast.error("An error occurred while saving the project.");
+    }
   };
 
   const handleApply = async () => {
@@ -888,7 +897,7 @@ export default function Projects() {
                             onClick={() => window.open(`/u/${selectedApp.user.username}`, '_blank')}
                             className="rounded-xl px-4 py-2 text-xs font-bold text-primary border border-primary/20 hover:bg-primary/10 transition-all font-sans"
                           >
-                            View Portfolio
+                            View Profile
                           </button>
                           {selectedApp.status === 'pending' && (
                             <>

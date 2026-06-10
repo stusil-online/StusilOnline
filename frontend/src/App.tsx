@@ -6,24 +6,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import Community from "./pages/Community";
-import Portfolio from "./pages/Portfolio";
-import Messages from "./pages/Messages";
-import Settings from "./pages/Settings";
 import Projects from "./pages/Projects";
-import Startups from "./pages/Startups";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Join from "./pages/Join";
 import PublicPortfolio from "./pages/PublicPortfolio";
 import About from "./pages/About";
 import Explore from "./pages/Explore";
-import Connections from "./pages/Connections";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
 import GetStarted from "./pages/GetStarted";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
+import Messages from "./pages/Messages";
+import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -51,9 +48,6 @@ const App = () => (
             <Route path="/dashboard" element={<Index />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/community" element={<Community />} />
-            <Route path="/connections" element={<Connections />} />
-            <Route path="/startups" element={<Startups />} />
-            <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />

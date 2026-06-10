@@ -39,7 +39,7 @@ export default function Community() {
             <h1 className="heading-tight text-4xl font-black text-foreground lg:text-5xl tracking-tight">The Hype</h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            Real-time pulse of the most ambitious student projects and startup ideas. Join the movement.
+            Real-time pulse of the most ambitious student projects. Join the movement.
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export default function Community() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      onClick={() => navigate('/startups')}
+                      onClick={() => navigate('/projects')}
                       className="group cursor-pointer"
                     >
                       <GlassCard className="p-5 border-purple-500/20 glass-card-hover relative overflow-hidden">

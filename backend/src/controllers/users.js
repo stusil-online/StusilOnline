@@ -46,17 +46,6 @@ const updateProfile = async (req, res) => {
       }
     });
 
-    // Sync with Portfolio if it exists
-    const portfolio = await prisma.portfolio.findUnique({ where: { user_id: req.user.id } });
-    if (portfolio) {
-      await prisma.portfolio.update({
-        where: { user_id: req.user.id },
-        data: {
-          bio: bio || portfolio.bio,
-          links: updateData.links || portfolio.links
-        }
-      });
-    }
 
     res.json(user);
   } catch (error) {

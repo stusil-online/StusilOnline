@@ -13,7 +13,7 @@ const questions = [
   {
     id: "goal",
     question: "What do you want to do on Stusil?",
-    options: ["Find partners", "Build startups", "Work on projects", "Showcase work"],
+    options: ["Find partners", "Build ventures", "Work on projects", "Showcase work"],
     type: "choice"
   },
   {

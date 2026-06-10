@@ -41,7 +41,7 @@ interface Recommendation {
 const quickActions = [
   { label: "New Project", icon: Plus, color: "text-primary", path: "/projects" },
   { label: "Find Team", icon: Search, color: "text-glow-secondary", path: "/community" },
-  { label: "Post Idea", icon: Rocket, color: "text-amber-400", path: "/startups" },
+  { label: "Explore", icon: Star, color: "text-amber-400", path: "/explore" },
   { label: "Messages", icon: MessageCircle, color: "text-emerald-400", path: "/messages" },
 ];
 
@@ -67,6 +67,7 @@ const Index = () => {
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const socketRef = useRef<Socket | null>(null);
+  const [showNotifDropdown, setShowNotifDropdown] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -75,7 +76,7 @@ const Index = () => {
     const fetchAll = async () => {
       try {
         const userData = await getApiData("/api/v1/auth/me");
-        if (userData && userData.email === 'stusil.org@gmail.com') {
+        if (userData && (userData.role === 'admin' || userData.email === 'stusil.online@gmail.com')) {
           return navigate("/admin");
         }
         setUser(userData);
@@ -103,11 +104,10 @@ const Index = () => {
         }
 
         const allProj = await getApiData("/api/v1/projects");
-        const allStartups = await getApiData("/api/v1/startups");
         
         const recs: Recommendation[] = [];
         if (Array.isArray(allProj)) {
-          for (const p of allProj.slice(0, 10)) {
+          for (const p of allProj.slice(0, 15)) {
             const openRoles = (p.roles || []).filter((r: any) => !r.is_filled);
             if (openRoles.length > 0 && p.owner_id !== user?.id) {
               recs.push({
@@ -116,21 +116,6 @@ const Index = () => {
                 type: `Needs: ${openRoles[0].title}`,
                 match: `${Math.floor(Math.random() * 20) + 75}% Match`,
                 link: `/projects`,
-              });
-            }
-            if (recs.length >= 2) break;
-          }
-        }
-        
-        if (Array.isArray(allStartups) && recs.length < 3) {
-          for (const s of allStartups.slice(0, 5)) {
-            if (s.creator_id !== user?.id) {
-              recs.push({
-                id: s.id,
-                title: s.title,
-                type: "Hot Startup Idea",
-                match: "Trending",
-                link: "/startups",
               });
             }
             if (recs.length >= 3) break;
@@ -201,15 +186,97 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="hidden lg:flex items-center gap-3">
-             <div className="text-right">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Global Rank</p>
-                <p className="text-sm font-black text-foreground">#{user?.rank || 142}</p>
+          <div className="flex items-center gap-4 relative">
+             <div className="hidden md:flex items-center gap-3">
+                <div className="text-right">
+                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Global Rank</p>
+                   <p className="text-sm font-black text-foreground">#{user?.rank || 142}</p>
+                </div>
+                <div className="h-10 w-[2px] bg-border/50 mx-2" />
+                <div className="text-right">
+                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Status</p>
+                   <p className="text-sm font-black text-emerald-500">Rising Star</p>
+                </div>
+                <div className="h-10 w-[2px] bg-border/50 mx-2" />
              </div>
-             <div className="h-10 w-[2px] bg-border/50 mx-2" />
-             <div className="text-right">
-                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Status</p>
-                <p className="text-sm font-black text-emerald-500">{user?.rank < 100 ? "Elite Legend" : "Rising Star"}</p>
+
+             {/* Interactive Notification Bell */}
+             <div className="relative">
+               <button
+                 onClick={() => setShowNotifDropdown(!showNotifDropdown)}
+                 className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-border/50 bg-secondary/30 text-muted-foreground transition-all hover:bg-secondary hover:text-foreground active:scale-95 shadow-lg"
+               >
+                 <Bell className="h-5 w-5" />
+                 {unreadCount > 0 && (
+                   <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-black text-white shadow-lg shadow-primary/30 animate-pulse">
+                     {unreadCount}
+                   </span>
+                 )}
+               </button>
+
+               <AnimatePresence>
+                 {showNotifDropdown && (
+                   <>
+                     <div className="fixed inset-0 z-30" onClick={() => setShowNotifDropdown(false)} />
+                     <motion.div
+                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                       animate={{ opacity: 1, y: 0, scale: 1 }}
+                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                       className="absolute right-0 mt-3 w-80 md:w-96 rounded-2xl border border-border/50 bg-card/95 p-4 shadow-2xl backdrop-blur-xl z-40"
+                     >
+                       <div className="flex items-center justify-between border-b border-border/30 pb-3 mb-3">
+                         <span className="text-sm font-bold text-foreground">Notifications</span>
+                         {unreadCount > 0 && (
+                           <button onClick={markAllRead} className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Mark all read</button>
+                         )}
+                       </div>
+                       
+                       <div className="max-h-[300px] overflow-y-auto space-y-2 pr-1">
+                         {notifications.length > 0 ? (
+                           notifications.map((n) => (
+                             <div
+                               key={n.id}
+                               onClick={() => {
+                                 if (n.link) {
+                                   navigate(n.link);
+                                   setShowNotifDropdown(false);
+                                 }
+                               }}
+                               className={`group rounded-xl border p-3 cursor-pointer transition-all hover:border-primary/30 ${
+                                 n.is_read ? "border-border/20 bg-secondary/5 opacity-70" : "border-primary/25 bg-primary/5"
+                               }`}
+                             >
+                               <div className="flex items-start gap-2.5">
+                                 <div className={`mt-1.5 h-2 w-2 rounded-full shrink-0 ${n.is_read ? "bg-muted-foreground/30" : "bg-primary shadow-lg shadow-primary/20 animate-pulse"}`} />
+                                 <div className="flex-1 min-w-0">
+                                   <div className="flex items-center justify-between mb-0.5">
+                                     <p className="text-[11px] font-black text-foreground uppercase tracking-tight">{n.title}</p>
+                                     <p className="text-[9px] font-bold text-muted-foreground uppercase">{timeAgo(n.created_at)}</p>
+                                   </div>
+                                   <p className="text-xs text-muted-foreground font-medium line-clamp-2 leading-snug">{n.body}</p>
+                                 </div>
+                               </div>
+                             </div>
+                           ))
+                         ) : (
+                           <div className="py-6 text-center text-xs font-semibold text-muted-foreground">
+                             You're all caught up!
+                           </div>
+                         )}
+                       </div>
+                       
+                       <div className="border-t border-border/30 pt-3 mt-3">
+                         <button
+                           onClick={() => { navigate('/connections'); setShowNotifDropdown(false); }}
+                           className="w-full text-center text-[10px] font-bold uppercase tracking-[0.2em] text-primary hover:underline"
+                         >
+                           View Connections Hub
+                         </button>
+                       </div>
+                     </motion.div>
+                   </>
+                 )}
+               </AnimatePresence>
              </div>
           </div>
         </motion.div>
@@ -291,7 +358,7 @@ const Index = () => {
                 {recommendations.length > 0 ? recommendations.map((rec) => (
                   <div key={rec.id} onClick={() => navigate(rec.link)} className="group relative rounded-2xl border border-border/50 bg-secondary/10 p-5 pr-12 transition-all hover:border-primary/30 hover:bg-primary/5 cursor-pointer">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-lg shadow-primary/5">
-                      {rec.type.includes("Startup") ? <Rocket className="h-5 w-5" /> : <FolderOpen className="h-5 w-5" />}
+                      <FolderOpen className="h-5 w-5" />
                     </div>
                     <h4 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{rec.title}</h4>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">{rec.type}</p>

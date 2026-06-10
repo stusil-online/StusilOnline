@@ -90,7 +90,7 @@ export default function Landing() {
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 backdrop-blur-xl bg-background/60 border-b border-border/30">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/5 overflow-hidden border border-border/30">
-            <img src="/favicon.ico" alt="Stusil Logo" className="h-6 w-6 object-contain" />
+            <img src="/logo.png" alt="Stusil Logo" className="h-6 w-6 object-contain" />
           </div>
           <span className="text-xl font-bold tracking-tight uppercase tracking-widest text-foreground">STUSIL</span>
         </div>
@@ -209,7 +209,7 @@ export default function Landing() {
             {[
               { title: "Find Teammates", desc: "Discover students with complementary skills from across your campus and beyond.", icon: Users, gradient: "from-primary/20 to-glow-secondary/20" },
               { title: "Manage Projects", desc: "Organize tasks, share files, and collaborate seamlessly in real-time workspaces.", icon: Code, gradient: "from-emerald-500/20 to-teal-500/20" },
-              { title: "Launch Startups", desc: "Pitch your ideas, find co-founders, and get feedback from the community.", icon: Rocket, gradient: "from-amber-500/20 to-orange-500/20" },
+              { title: "Launch Ventures", desc: "Pitch your ideas, find co-founders, and get feedback from the community.", icon: Rocket, gradient: "from-amber-500/20 to-orange-500/20" },
               { title: "Smart Matching", desc: "Our algorithm connects you with the right opportunities based on your skills.", icon: Search, gradient: "from-pink-500/20 to-rose-500/20" },
               { title: "Verified Profiles", desc: "Connect with real students using verified university email addresses.", icon: ShieldCheck, gradient: "from-cyan-500/20 to-blue-500/20" },
               { title: "Global Community", desc: "Expand your network and learn from talented individuals worldwide.", icon: Globe, gradient: "from-violet-500/20 to-purple-500/20" },
@@ -320,7 +320,7 @@ export default function Landing() {
           </motion.div>
           <div className="grid md:grid-cols-2 gap-8">
             {[
-              { quote: "Stusil helped me find a brilliant CS student to build the technical foundation for my startup idea. We just got our first seed funding!", author: "Michael T.", role: "Business Major, Stanford", stars: 5 },
+              { quote: "Stusil helped me find a brilliant CS student to build the technical foundation for my tech venture. We just launched our beta!", author: "Michael T.", role: "Business Major, Stanford", stars: 5 },
               { quote: "My public portfolio on Stusil directly landed me a summer internship. Recruiters love seeing real-world, collaborative projects.", author: "Sarah L.", role: "Software Eng, MIT", stars: 5 },
             ].map((test, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="glass-card p-8 border border-border/50 relative">

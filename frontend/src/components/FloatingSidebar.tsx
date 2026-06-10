@@ -25,10 +25,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
   { icon: Briefcase, label: "Projects", path: "/projects" },
   { icon: Users, label: "Community", path: "/community" },
-  { icon: Rocket, label: "Startups", path: "/startups" },
-  { icon: FolderOpen, label: "Portfolio", path: "/portfolio" },
   { icon: MessageCircle, label: "Messages", path: "/messages" },
-  { icon: UserPlus, label: "Connections", path: "/connections" },
   { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
@@ -50,32 +47,30 @@ export function FloatingSidebar({
   onLogout: () => void;
   user: { full_name: string; username: string; email: string } | null;
 }) {
-  const [isDark, setIsDark] = useState(() => !document.documentElement.classList.contains("light"));
+  const [isDark, setIsDark] = useState(() => {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark") return true;
+    if (stored === "light") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
   const location = useLocation();
   const navigate = useNavigate();
 
   // Theme toggle
   useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    if (stored === "light") {
-      document.documentElement.classList.add("light");
-      setIsDark(false);
+    if (isDark) {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("light");
-      setIsDark(true);
+      document.documentElement.classList.remove("dark");
     }
-  }, []);
+  }, [isDark]);
 
   const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.remove("light");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    }
+    setIsDark((prev) => {
+      const next = !prev;
+      localStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
   };
 
   return (
@@ -88,7 +83,7 @@ export function FloatingSidebar({
     >
       <div className="flex items-center gap-3 border-b border-border/30 px-4 py-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/5 flex-shrink-0 overflow-hidden">
-          <img src="/favicon.ico" alt="Stusil Logo" className="h-5 w-5 object-contain" />
+          <img src="/logo.png" alt="Stusil Logo" className="h-5 w-5 object-contain" />
         </div>
         {!collapsed && (
           <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold tracking-tight text-foreground">
@@ -104,7 +99,7 @@ export function FloatingSidebar({
       )}
 
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
-        {(user?.email === 'stusil.org@gmail.com' ? adminNavItems : navItems).map((item) => {
+        {((user?.email === 'stusil.online@gmail.com' || (user as any)?.role === 'admin') ? adminNavItems : navItems).map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <button

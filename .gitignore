@@ -1,16 +1,62 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+/.pnp
+.pnp.js
+
 # Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 backend/.env
 frontend/.env
 
-# Node modules
-backend/node_modules/
-frontend/node_modules/
-
 # Build output
+dist/
+build/
 frontend/dist/
+frontend/dist-tsc/
+backend/dist/
 
-# Prisma migrations (optional depending on team workflow)
+# Prisma
 backend/prisma/migrations/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
 
-# Docs (only if you really don't want them in repo)
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Editor/IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Misc
+frontend/.eslintcache
 docs/
+backend/uploads/

@@ -7,13 +7,10 @@ const commands = [
   { label: "Dashboard", path: "/dashboard", section: "Navigation", icon: "🏠" },
   { label: "Projects", path: "/projects", section: "Navigation", icon: "📋" },
   { label: "Community", path: "/community", section: "Navigation", icon: "👥" },
-  { label: "Startups", path: "/startups", section: "Navigation", icon: "🚀" },
-  { label: "Portfolio", path: "/portfolio", section: "Navigation", icon: "📁" },
   { label: "Messages", path: "/messages", section: "Navigation", icon: "💬" },
   { label: "Settings", path: "/settings", section: "Navigation", icon: "⚙️" },
   { label: "Admin Panel", path: "/admin", section: "Navigation", icon: "🛡️" },
   { label: "New Project", path: "/projects", section: "Actions", icon: "✨" },
-  { label: "Post Startup Idea", path: "/startups", section: "Actions", icon: "💡" },
   { label: "Find Teammates", path: "/community", section: "Actions", icon: "🔍" },
   { label: "Public Page", path: "/explore", section: "Pages", icon: "🌐" },
 ];
