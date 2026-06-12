@@ -162,10 +162,14 @@ export default function Admin() {
     }
   };
 
-  const filteredUsers = users.filter((u) =>
-    u.name?.toLowerCase().includes(search.toLowerCase()) ||
-    u.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredUsers = users.filter((u) => {
+    if (u.role?.toLowerCase() === 'admin' || u.email === 'stusil.online@gmail.com') return false;
+    const s = search.toLowerCase();
+    return (
+      (u.name || u.full_name || u.username || "").toLowerCase().includes(s) ||
+      (u.email || "").toLowerCase().includes(s)
+    );
+  });
 
   const filteredProjects = projects.filter((p) =>
     p.title?.toLowerCase().includes(search.toLowerCase()) ||
@@ -335,14 +339,13 @@ export default function Admin() {
 
         {tab === "users" && (
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-background/50 px-4 py-2.5 w-full max-w-md backdrop-blur-md shadow-sm">
-                <Search className="h-4 w-4 text-muted-foreground" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search pioneers by name or email..." className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground" />
-              </div>
-            </div>
-
             <GlassCard className="p-0 overflow-hidden border-border/40">
+              <div className="p-4 border-b border-border/20 bg-background/50 flex items-center justify-between">
+                <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-background/50 px-4 py-2.5 w-full max-w-md backdrop-blur-md shadow-sm">
+                  <Search className="h-4 w-4 text-muted-foreground" />
+                  <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search pioneers by name or email..." className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground" />
+                </div>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
