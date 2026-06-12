@@ -22,6 +22,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Event from "./pages/Event";
+import EventDetails from "./pages/EventDetails";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +58,9 @@ const App = () => (
             <Route path="/admin" element={<Admin />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/polaris" element={<Navigate to="/event" replace />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/event/:id" element={<EventDetails />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

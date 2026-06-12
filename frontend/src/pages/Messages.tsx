@@ -62,11 +62,11 @@ interface ConnectedUser {
 // ==================== Helpers ====================
 const colors = [
   "from-primary to-glow-secondary",
-  "from-emerald-500 to-teal-500",
-  "from-amber-500 to-orange-500",
-  "from-pink-500 to-rose-500",
-  "from-cyan-500 to-blue-500",
-  "from-violet-500 to-purple-500",
+  "from-blue-600 to-cyan-500",
+  "from-indigo-600 to-blue-500",
+  "from-cyan-500 to-sky-400",
+  "from-indigo-500 to-sky-500",
+  "from-blue-500 to-indigo-500",
 ];
 
 function formatTime(dateStr: string) {

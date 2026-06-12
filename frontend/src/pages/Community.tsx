@@ -63,8 +63,8 @@ export default function Community() {
             <div className="lg:col-span-8 space-y-8">
               <section>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="h-8 w-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                    <Trophy className="h-4 w-4 text-amber-500" />
+                  <div className="h-8 w-8 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+                    <Trophy className="h-4 w-4 text-cyan-600" />
                   </div>
                   <h2 className="text-xl font-bold text-foreground">Trending Projects</h2>
                 </div>
@@ -79,12 +79,12 @@ export default function Community() {
                       onClick={() => navigate('/projects')}
                       className="group relative cursor-pointer"
                     >
-                      <GlassCard className="h-full overflow-hidden p-0 border-amber-500/20 glass-card-hover">
+                      <GlassCard className="h-full overflow-hidden p-0 border-cyan-500/20 glass-card-hover">
                         <div className="relative h-48 w-full overflow-hidden">
                           {p.banner_image ? (
                             <img src={p.banner_image} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-500/20 to-orange-500/20 text-3xl font-black text-amber-500/30">
+                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-3xl font-black text-primary/30">
                               PRJ
                             </div>
                           )}
@@ -92,14 +92,14 @@ export default function Community() {
                              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white">
                                <Eye className="h-3 w-3" /> {p.views}
                              </div>
-                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500 text-[10px] font-bold text-black">
+                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500 text-[10px] font-bold text-white">
                                <Star className="h-3 w-3 fill-current" /> {p.stars}
                              </div>
                           </div>
                         </div>
                         <div className="p-6">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-2 block">{p.field}</span>
-                          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-amber-400 transition-colors line-clamp-1">{p.title}</h3>
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 mb-2 block">{p.field}</span>
+                          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-cyan-500 transition-colors line-clamp-1">{p.title}</h3>
                           <div 
                             className="flex items-center gap-2 mt-4 hover:opacity-80 transition-opacity cursor-pointer inline-flex"
                             onClick={(e) => { e.stopPropagation(); navigate(`/u/${p.owner.username}`); }}
@@ -122,9 +122,9 @@ export default function Community() {
               </section>
 
               {/* Bonus Graphic/Call to Action Area */}
-              <GlassCard className="p-8 bg-gradient-to-br from-primary/10 via-transparent to-purple-500/10 border-primary/20 text-center overflow-hidden relative">
+              <GlassCard className="p-8 bg-gradient-to-br from-primary/10 via-transparent to-cyan-500/10 border-primary/20 text-center overflow-hidden relative">
                  <div className="absolute -top-10 -right-10 h-32 w-32 bg-primary/20 blur-[60px] rounded-full" />
-                 <div className="absolute -bottom-10 -left-10 h-32 w-32 bg-purple-500/20 blur-[60px] rounded-full" />
+                 <div className="absolute -bottom-10 -left-10 h-32 w-32 bg-cyan-500/20 blur-[60px] rounded-full" />
                  <Flame className="h-10 w-10 text-primary mx-auto mb-4 animate-pulse" />
                  <h3 className="text-xl font-bold text-foreground mb-2">Build Your Legacy</h3>
                  <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
@@ -140,8 +140,8 @@ export default function Community() {
             <div className="lg:col-span-4 space-y-8">
               <section>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="h-8 w-8 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                    <Rocket className="h-4 w-4 text-purple-500" />
+                  <div className="h-8 w-8 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                    <Rocket className="h-4 w-4 text-indigo-500" />
                   </div>
                   <h2 className="text-xl font-bold text-foreground">Hot Ideas</h2>
                 </div>
@@ -156,14 +156,14 @@ export default function Community() {
                       onClick={() => navigate('/projects')}
                       className="group cursor-pointer"
                     >
-                      <GlassCard className="p-5 border-purple-500/20 glass-card-hover relative overflow-hidden">
-                        <div className="absolute top-0 right-0 h-1 w-full bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
-                        <h4 className="text-sm font-bold text-foreground mb-2 group-hover:text-purple-400 transition-colors">{idea.title}</h4>
+                      <GlassCard className="p-5 border-indigo-500/20 glass-card-hover relative overflow-hidden">
+                        <div className="absolute top-0 right-0 h-1 w-full bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+                        <h4 className="text-sm font-bold text-foreground mb-2 group-hover:text-indigo-500 transition-colors">{idea.title}</h4>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] text-muted-foreground">by {idea.creator.full_name}</span>
                           </div>
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-[10px] font-bold text-purple-400">
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-bold text-indigo-500">
                              <Flame className="h-3 w-3" /> {idea.joinRequests} applicants
                           </div>
                         </div>
@@ -181,8 +181,8 @@ export default function Community() {
               {/* Top Students Mini-Leaderboard */}
               <section className="mt-8">
                  <div className="flex items-center gap-3 mb-6">
-                    <div className="h-8 w-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                       <Trophy className="h-4 w-4 text-amber-500" />
+                    <div className="h-8 w-8 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                       <Trophy className="h-4 w-4 text-blue-500" />
                     </div>
                     <h2 className="text-xl font-bold text-foreground">Top Innovators</h2>
                  </div>
@@ -225,7 +225,7 @@ export default function Community() {
 
               <GlassCard className="p-6 border-primary/20 bg-secondary/10">
                 <div className="flex items-center gap-2 mb-4">
-                   <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                   <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
                    <h3 className="text-sm font-bold text-foreground uppercase tracking-widest">Community Pulse</h3>
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-6">

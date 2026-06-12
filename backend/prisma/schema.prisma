@@ -159,3 +159,15 @@ model Notification {
   @@index([user_id])
   @@map("notifications")
 }
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  date        String
+  status      String   @default("upcoming") // upcoming, completed
+  details     String?  // JSON string containing detailed event pages metadata
+  created_at  DateTime @default(now())
+
+  @@map("events")
+}

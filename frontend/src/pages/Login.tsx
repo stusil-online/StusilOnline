@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
-import { GlassCard } from "@/components/GlassCard";
 import { toast } from "sonner";
 
 export default function Login() {
@@ -12,12 +11,18 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.body.classList.add("bg-slate-50");
+    return () => {
+      document.body.classList.remove("bg-slate-50");
+    };
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Corrected production path for v1 auth
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/v1/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -42,154 +47,93 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground overflow-hidden">
-      {/* Left Form Section */}
-      <div className="flex flex-1 flex-col justify-center px-6 py-12 lg:flex-none lg:w-1/2 xl:w-5/12 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="mx-auto w-full max-sm lg:w-96"
-        >
-          {/* Logo */}
-          <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/5 overflow-hidden border border-border/30">
-              <img src="/logo.png" alt="Stusil Logo" className="h-6 w-6 object-contain" />
+    <div className="fixed inset-0 bg-gradient-to-br from-indigo-50/80 via-blue-50/30 to-cyan-50/40 text-zinc-950 flex flex-col justify-center items-center p-6 overflow-y-auto">
+      
+      {/* Background Grid and Mesh Orbs */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+      <div className="absolute top-[10%] left-[10%] h-[350px] w-[350px] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[10%] h-[350px] w-[350px] rounded-full bg-cyan-400/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[40%] right-[20%] h-[300px] w-[300px] rounded-full bg-indigo-500/5 blur-[100px] pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 15 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-md bg-white/40 backdrop-blur-xl border border-white/60 p-6 md:p-8 rounded-[2.5rem] shadow-xl relative z-10 my-auto"
+      >
+        {/* Logo */}
+        <div className="mb-8 flex flex-col items-center text-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 overflow-hidden shrink-0 shadow-inner">
+            <img src="/logo.png" alt="Stusil Logo" className="h-8 w-8 object-contain" />
+          </div>
+          <span className="text-xl font-black tracking-widest text-zinc-900 uppercase">STUSIL</span>
+        </div>
+
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 leading-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-zinc-500">Sign in to your creator account to continue building.</p>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-zinc-700">Email Address</label>
+            <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/85 px-4 py-3 focus-within:border-primary/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 transition-all shadow-sm">
+              <Mail className="h-4 w-4 text-zinc-400" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@university.edu"
+                className="flex-1 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400"
+                required
+              />
             </div>
-            <span className="text-xl font-bold tracking-tight text-foreground uppercase tracking-widest">STUSIL</span>
           </div>
 
-          <div>
-            <h1 className="heading-tight text-3xl font-bold text-foreground">Welcome back</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Sign in to your account to continue</p>
-          </div>
-
-          <div className="mt-8">
-            <form onSubmit={handleLogin} className="space-y-5">
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Email</label>
-                <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-secondary/30 px-4 py-3 focus-within:border-primary/50 transition-colors">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@university.edu"
-                    className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Password</label>
-                <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-secondary/30 px-4 py-3 focus-within:border-primary/50 transition-colors">
-                  <Lock className="h-4 w-4 text-muted-foreground" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-                    required
-                  />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-muted-foreground hover:text-foreground">
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between text-xs">
-                <label className="flex items-center gap-2 text-muted-foreground">
-                  <input type="checkbox" className="rounded border-border bg-transparent" />
-                  Remember me
-                </label>
-                <Link to="/forgot-password" stroke-width="1.5" className="text-primary hover:text-primary/80 transition-colors">Forgot password?</Link>
-              </div>
-
-              <button type="submit" disabled={loading} className="glow-button flex w-full items-center justify-center gap-2 py-3 text-sm font-semibold disabled:opacity-50">
-                {loading ? (
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground" />
-                ) : (
-                  <>Sign In <ArrowRight className="h-4 w-4" /></>
-                )}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-bold text-zinc-700">Password</label>
+              <Link to="/forgot-password" className="text-xs font-bold text-primary hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/85 px-4 py-3 focus-within:border-primary/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 transition-all shadow-sm">
+              <Lock className="h-4 w-4 text-zinc-400" />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="flex-1 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400"
+                required
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
               </button>
-            </form>
-
-            <p className="mt-8 text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              <Link to="/join" className="font-semibold text-primary hover:text-primary/80 transition-colors">Join Stusil</Link>
-            </p>
+            </div>
           </div>
-        </motion.div>
-      </div>
 
-      {/* Right Graphic Section - Enhanced for Trust and Opportunity */}
-      <div className="relative hidden w-0 flex-1 lg:block border-l border-border/10 bg-secondary/5 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-40">
-           <div className="absolute top-[-10%] right-[-10%] h-[600px] w-[600px] rounded-full bg-primary/20 blur-[120px]" />
-           <div className="absolute bottom-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-glow-secondary/20 blur-[100px]" />
-        </div>
+          <button 
+            type="submit" 
+            disabled={loading} 
+            className="glow-button flex w-full items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold shadow-md shadow-primary/20 disabled:opacity-50"
+          >
+            {loading ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            ) : (
+              <>
+                <span>Sign In</span> 
+                <ArrowRight className="h-4 w-4" />
+              </>
+            )}
+          </button>
+        </form>
 
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-12">
-           <div className="w-full max-w-lg space-y-8">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-6"
-              >
-                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black uppercase tracking-widest text-primary">
-                    <Sparkles className="h-3 w-3" /> Live Ecosystem Activity
-                 </div>
-                 <h2 className="text-4xl xl:text-5xl font-black text-foreground leading-[1.1] tracking-tighter">
-                    Where students turn <span className="text-primary italic">ideas</span> into <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-glow-secondary">impact.</span>
-                 </h2>
-              </motion.div>
-
-              <div className="grid gap-4">
-                 {[
-                    { label: "New Project Launched", user: "Sarah L.", domain: "FinTech", color: "primary" },
-                    { label: "Secured Beta Testing", user: "David K.", domain: "AI/ML", color: "glow-secondary" },
-                    { label: "Community Milestone", user: "1.2k members", domain: "Growth", color: "primary" }
-                 ].map((item, i) => (
-                    <motion.div
-                       key={i}
-                       initial={{ opacity: 0, x: 50 }}
-                       animate={{ opacity: 1, x: 0 }}
-                       transition={{ delay: 0.4 + (i * 0.1), duration: 0.6 }}
-                    >
-                       <GlassCard className="p-4 border-white/5 bg-white/5 backdrop-blur-3xl group hover:border-primary/30 transition-all duration-500">
-                          <div className="flex items-center justify-between">
-                             <div className="flex items-center gap-4">
-                                <div className={`h-10 w-10 rounded-xl bg-${item.color}/10 flex items-center justify-center text-${item.color === 'primary' ? 'primary' : 'glow-secondary'}`}>
-                                   {item.user[0]}
-                                </div>
-                                <div>
-                                   <div className="text-sm font-bold text-foreground">{item.label}</div>
-                                   <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{item.user} • {item.domain}</div>
-                                </div>
-                             </div>
-                             <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors group-hover:translate-x-1 duration-300" />
-                          </div>
-                       </GlassCard>
-                    </motion.div>
-                 ))}
-              </div>
-           </div>
-        </div>
-
-        <div className="absolute bottom-12 left-12 right-12 z-20 flex items-center justify-between">
-           <div className="flex items-center gap-4">
-              <div className="flex -space-x-3">
-                 {[1,2,3,4].map(i => (
-                    <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-secondary flex items-center justify-center text-[10px] font-bold">U{i}</div>
-                 ))}
-              </div>
-              <p className="text-xs font-bold text-muted-foreground">Joined by 2,000+ builders this month</p>
-           </div>
-        </div>
-      </div>
+        <p className="mt-6 text-center text-sm text-zinc-500">
+          Don't have an account?{" "}
+          <Link to="/join" className="font-bold text-primary hover:underline">Join Stusil</Link>
+        </p>
+      </motion.div>
     </div>
   );
 }

@@ -45,7 +45,7 @@ export default function Landing() {
         <motion.div
           animate={{ scale: [1, 1.1, 1], y: [0, -30, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px]"
+          className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px]"
         />
 
         {/* Grid pattern */}
@@ -95,9 +95,6 @@ export default function Landing() {
           <span className="text-xl font-bold tracking-tight uppercase tracking-widest text-foreground">STUSIL</span>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={toggleTheme} className="flex h-9 w-9 items-center justify-center rounded-xl border border-border/50 text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all">
-            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-          </button>
           <button onClick={() => navigate("/explore")} className="text-sm font-medium hover:text-primary transition-colors hidden md:block px-3 py-2">
             Explore
           </button>
@@ -208,11 +205,11 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { title: "Find Teammates", desc: "Discover students with complementary skills from across your campus and beyond.", icon: Users, gradient: "from-primary/20 to-glow-secondary/20" },
-              { title: "Manage Projects", desc: "Organize tasks, share files, and collaborate seamlessly in real-time workspaces.", icon: Code, gradient: "from-emerald-500/20 to-teal-500/20" },
-              { title: "Launch Ventures", desc: "Pitch your ideas, find co-founders, and get feedback from the community.", icon: Rocket, gradient: "from-amber-500/20 to-orange-500/20" },
-              { title: "Smart Matching", desc: "Our algorithm connects you with the right opportunities based on your skills.", icon: Search, gradient: "from-pink-500/20 to-rose-500/20" },
+              { title: "Manage Projects", desc: "Organize tasks, share files, and collaborate seamlessly in real-time workspaces.", icon: Code, gradient: "from-blue-600/20 to-cyan-500/20" },
+              { title: "Launch Ventures", desc: "Pitch your ideas, find co-founders, and get feedback from the community.", icon: Rocket, gradient: "from-indigo-600/20 to-blue-500/20" },
+              { title: "Smart Matching", desc: "Our algorithm connects you with the right opportunities based on your skills.", icon: Search, gradient: "from-cyan-500/20 to-sky-400/20" },
               { title: "Verified Profiles", desc: "Connect with real students using verified university email addresses.", icon: ShieldCheck, gradient: "from-cyan-500/20 to-blue-500/20" },
-              { title: "Global Community", desc: "Expand your network and learn from talented individuals worldwide.", icon: Globe, gradient: "from-violet-500/20 to-purple-500/20" },
+              { title: "Global Community", desc: "Expand your network and learn from talented individuals worldwide.", icon: Globe, gradient: "from-indigo-500/20 to-sky-500/20" },
             ].map((feature, i) => (
               <motion.div
                 key={i}
@@ -278,9 +275,9 @@ export default function Landing() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { title: "EcoTrack Mobile App", field: "Computer Science", team: "4 Students", desc: "A mobile application tracking carbon footprints via machine learning.", gradient: "from-emerald-500 to-teal-500" },
+              { title: "EcoTrack Mobile App", field: "Computer Science", team: "4 Students", desc: "A mobile application tracking carbon footprints via machine learning.", gradient: "from-blue-600 to-cyan-500" },
               { title: "NeuroConnect Device", field: "Biomedical Eng", team: "2 Students", desc: "Cost-effective EEG headset prototype mapping brainwave patterns.", gradient: "from-primary to-glow-secondary" },
-              { title: "Campus Thrift", field: "Business", team: "3 Students", desc: "A campus marketplace for student-to-student textbook and clothing sales.", gradient: "from-amber-500 to-orange-500" },
+              { title: "Campus Thrift", field: "Business", team: "3 Students", desc: "A campus marketplace for student-to-student textbook and clothing sales.", gradient: "from-indigo-600 to-blue-500" },
             ].map((proj, i) => (
               <motion.div
                 key={i}

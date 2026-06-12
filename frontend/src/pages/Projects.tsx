@@ -84,11 +84,11 @@ function getRoleIcon(title: string) {
 }
 
 const roleColors = [
-  "from-violet-500/20 to-purple-500/20 border-violet-500/30 text-violet-400",
-  "from-emerald-500/20 to-teal-500/20 border-emerald-500/30 text-emerald-400",
-  "from-amber-500/20 to-orange-500/20 border-amber-500/30 text-amber-400",
-  "from-pink-500/20 to-rose-500/20 border-pink-500/30 text-pink-400",
-  "from-cyan-500/20 to-blue-500/20 border-cyan-500/30 text-cyan-400",
+  "from-blue-500/20 to-indigo-500/20 border-blue-500/30 text-blue-550",
+  "from-cyan-500/20 to-blue-500/20 border-cyan-500/30 text-cyan-550",
+  "from-indigo-500/20 to-sky-500/20 border-indigo-500/30 text-indigo-550",
+  "from-sky-500/20 to-cyan-500/20 border-sky-500/30 text-sky-550",
+  "from-blue-600/20 to-cyan-600/20 border-blue-600/30 text-blue-600",
 ];
 
 export default function Projects() {
@@ -410,10 +410,10 @@ export default function Projects() {
               {filtered.map((project, i) => {
               const openRoles = project.roles?.filter(r => !r.is_filled) || [];
               const cardGradients = [
-                "from-blue-600 via-indigo-600 to-violet-600",
-                "from-emerald-600 via-teal-500 to-cyan-500",
-                "from-orange-600 via-amber-500 to-yellow-500",
-                "from-fuchsia-600 via-purple-500 to-pink-500",
+                "from-blue-600 via-indigo-600 to-cyan-600",
+                "from-indigo-600 via-blue-500 to-sky-500",
+                "from-cyan-600 via-sky-500 to-blue-500",
+                "from-blue-700 via-indigo-600 to-sky-600",
               ];
               const gradient = cardGradients[i % cardGradients.length];
 
@@ -488,7 +488,7 @@ export default function Projects() {
                     <div className="mb-3 flex items-start justify-between">
                        <h3 className="text-xl font-black text-foreground group-hover:text-primary transition-colors line-clamp-1">{project.title}</h3>
                        {openRoles.length > 0 && (
-                         <div className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse" />
+                         <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
                        )}
                     </div>
                     <p className="mb-4 text-xs font-medium text-muted-foreground line-clamp-2 leading-relaxed">{project.description}</p>
@@ -614,8 +614,8 @@ export default function Projects() {
                    <div className="absolute bottom-6 left-8 right-8">
                       <div className="flex items-center gap-3 mb-3">
                          <span className="rounded-full bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">{selected.field}</span>
-                         <span className="flex items-center gap-1 rounded-full bg-emerald-500/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-400 border border-emerald-500/20">
-                           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> Formation
+                         <span className="flex items-center gap-1 rounded-full bg-blue-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-blue-500 border border-blue-500/20">
+                           <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" /> Formation
                          </span>
                       </div>
                       <h2 className="heading-tight text-4xl font-black text-foreground tracking-tight">{selected.title}</h2>
@@ -678,7 +678,7 @@ export default function Projects() {
                                         <div className={`h-8 w-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover/role:bg-primary group-hover/role:text-white transition-all`}>
                                            <Icon className="h-4 w-4" />
                                         </div>
-                                        {userApplied && <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Active App</span>}
+                                        {userApplied && <span className="text-[9px] font-black text-primary uppercase tracking-widest">Active App</span>}
                                      </div>
                                      <h4 className="text-[11px] font-black text-foreground uppercase tracking-tight">{role.title}</h4>
                                      
@@ -697,7 +697,7 @@ export default function Projects() {
                                      )}
                                      
                                      {selected.owner_id === user?.id && role.applications?.length > 0 && (
-                                       <button onClick={() => setViewAppRole(role)} className="w-full mt-3 py-2 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all">
+                                       <button onClick={() => setViewAppRole(role)} className="w-full mt-3 py-2 rounded-xl bg-primary/10 text-primary border border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
                                           Review {role.applications.length}
                                        </button>
                                      )}
@@ -855,7 +855,7 @@ export default function Projects() {
                               <div className="flex items-center gap-2 mt-0.5">
                                 <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-tighter ${
                                   app.status === 'pending' ? 'bg-amber-500/10 text-amber-400' :
-                                  app.status === 'accepted' ? 'bg-emerald-500/10 text-emerald-400' :
+                                  app.status === 'accepted' ? 'bg-cyan-500/10 text-cyan-500' :
                                   'bg-destructive/10 text-destructive'
                                 }`}>{app.status}</span>
                                 <span className="text-[8px] text-muted-foreground">{new Date(app.created_at).toLocaleDateString()}</span>

@@ -30,43 +30,43 @@ export default function About() {
           </section>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <section className="glass-card p-8 border-emerald-500/20">
+            <section className="glass-card p-8 border-cyan-500/20">
               <div className="flex items-center gap-4 mb-6">
-                <Heart className="h-6 w-6 text-emerald-500" />
+                <Heart className="h-6 w-6 text-cyan-500" />
                 <h2 className="text-xl font-bold">How Students Benefit</h2>
               </div>
               <ul className="space-y-4 text-muted-foreground">
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-cyan-500 mt-2" />
                   <span>Find technical or business co-founders.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-cyan-500 mt-2" />
                   <span>Build a verified portfolio of real-world projects.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-cyan-500 mt-2" />
                   <span>Connect globally outside your immediate degree.</span>
                 </li>
               </ul>
             </section>
 
-            <section className="glass-card p-8 border-purple-500/20">
+            <section className="glass-card p-8 border-indigo-500/20">
               <div className="flex items-center gap-4 mb-6">
-                <Shield className="h-6 w-6 text-purple-500" />
+                <Shield className="h-6 w-6 text-indigo-500" />
                 <h2 className="text-xl font-bold">Platform Principles</h2>
               </div>
               <ul className="space-y-4 text-muted-foreground">
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-purple-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-indigo-500 mt-2" />
                   <span>Student-first ecosystem and tooling.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-purple-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-indigo-500 mt-2" />
                   <span>Secure, verified academic identities.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-purple-500 mt-2" />
+                  <div className="h-2 w-2 rounded-full bg-indigo-500 mt-2" />
                   <span>Open collaboration without boundaries.</span>
                 </li>
               </ul>

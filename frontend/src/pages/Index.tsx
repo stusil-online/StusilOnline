@@ -41,8 +41,8 @@ interface Recommendation {
 const quickActions = [
   { label: "New Project", icon: Plus, color: "text-primary", path: "/projects" },
   { label: "Find Team", icon: Search, color: "text-glow-secondary", path: "/community" },
-  { label: "Explore", icon: Star, color: "text-amber-400", path: "/explore" },
-  { label: "Messages", icon: MessageCircle, color: "text-emerald-400", path: "/messages" },
+  { label: "Explore", icon: Star, color: "text-indigo-500", path: "/explore" },
+  { label: "Messages", icon: MessageCircle, color: "text-cyan-500", path: "/messages" },
 ];
 
 function timeAgo(dateStr: string) {
@@ -97,7 +97,7 @@ const Index = () => {
             icon: n.type === "application" ? Briefcase : n.type === "accepted" ? Check : n.type === "connection" ? Users : Bell,
             label: n.body,
             time: timeAgo(n.created_at),
-            color: n.type === "accepted" ? "text-emerald-500 bg-emerald-500/10" : n.type === "application" ? "text-primary bg-primary/10" : "text-amber-500 bg-amber-500/10",
+            color: n.type === "accepted" ? "text-cyan-600 bg-cyan-500/10" : n.type === "application" ? "text-primary bg-primary/10" : "text-indigo-500 bg-indigo-500/10",
             link: n.link || undefined,
           }));
           setActivity(actItems);
@@ -141,7 +141,7 @@ const Index = () => {
         icon: notif.type === "application" ? Briefcase : notif.type === "accepted" ? Check : Bell,
         label: notif.body,
         time: "just now",
-        color: notif.type === "accepted" ? "text-emerald-500 bg-emerald-500/10" : "text-primary bg-primary/10",
+        color: notif.type === "accepted" ? "text-cyan-600 bg-cyan-500/10" : "text-primary bg-primary/10",
         link: notif.link || undefined,
       }, ...prev.slice(0, 4)]);
     });
@@ -174,7 +174,7 @@ const Index = () => {
                   (user?.full_name || user?.username || "U").substring(0, 1)
                 )}
               </div>
-              <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-background bg-emerald-500 shadow-xl" />
+              <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-background bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
             </div>
             <div>
               <h1 className="heading-tight text-3xl font-black text-foreground tracking-tight lg:text-4xl">
@@ -195,7 +195,7 @@ const Index = () => {
                 <div className="h-10 w-[2px] bg-border/50 mx-2" />
                 <div className="text-right">
                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Status</p>
-                   <p className="text-sm font-black text-emerald-500">Rising Star</p>
+                   <p className="text-sm font-black text-primary">Rising Star</p>
                 </div>
                 <div className="h-10 w-[2px] bg-border/50 mx-2" />
              </div>
@@ -283,7 +283,7 @@ const Index = () => {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="md:col-span-2">
-            <GlassCard className="relative overflow-hidden border-glow-secondary/20 h-full">
+            <GlassCard className="relative overflow-hidden border border-glow-secondary/40 ring-1 ring-glow-secondary/10 shadow-[0_0_15px_rgba(14,165,233,0.08)] h-full">
               <div className="absolute -right-6 -bottom-6 h-20 w-20 bg-glow-secondary/10 blur-[40px] rounded-full" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
@@ -302,18 +302,18 @@ const Index = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="md:col-span-2">
-            <GlassCard className="relative overflow-hidden border-orange-500/20 h-full">
-              <div className="absolute -right-6 -bottom-6 h-20 w-20 bg-orange-500/10 blur-[40px] rounded-full" />
+            <GlassCard className="relative overflow-hidden border border-indigo-500/40 ring-1 ring-indigo-500/10 shadow-[0_0_15px_rgba(99,102,241,0.08)] h-full">
+              <div className="absolute -right-6 -bottom-6 h-20 w-20 bg-indigo-500/10 blur-[40px] rounded-full" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1">Founding Network</p>
                   <p className="heading-tight mt-2 text-5xl font-black text-foreground">{connectionCount}</p>
                   <div className="mt-4 flex items-center gap-1.5">
-                    <Users className="h-3 w-3 text-orange-400" />
-                    <span className="text-[10px] font-bold text-orange-400 uppercase tracking-widest">Collective Power</span>
+                    <Users className="h-3 w-3 text-indigo-400" />
+                    <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Collective Power</span>
                   </div>
                 </div>
-                <div className="h-16 w-16 rounded-2xl bg-orange-500/5 border border-orange-500/20 flex items-center justify-center text-orange-400">
+                <div className="h-16 w-16 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                   <Flame className="h-8 w-8" />
                 </div>
               </div>
@@ -321,14 +321,14 @@ const Index = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="md:col-span-1">
-            <GlassCard className="h-full">
+            <GlassCard className="border border-primary/25 ring-1 ring-primary/10 shadow-[0_0_15px_rgba(37,99,235,0.08)] h-full">
               <p className="mb-6 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Hub Access</p>
               <div className="grid grid-cols-1 gap-3">
                 {quickActions.map((action) => (
                   <button
                     key={action.label}
                     onClick={() => navigate(action.path)}
-                    className="group flex items-center justify-between rounded-xl border border-border/30 bg-secondary/20 p-4 transition-all hover:border-primary/50 hover:bg-primary/5 hover:translate-x-1 duration-300"
+                    className="group flex items-center justify-between rounded-xl border border-primary/15 ring-1 ring-primary/5 bg-white/30 backdrop-blur-md p-4 transition-all hover:border-primary/45 hover:bg-white/50 hover:translate-x-1 duration-300 shadow-sm"
                   >
                     <div className="flex items-center gap-3">
                       <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/50 group-hover:bg-primary/10 transition-colors`}>
@@ -344,7 +344,7 @@ const Index = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="md:col-span-3">
-            <GlassCard className="h-full">
+            <GlassCard className="border border-primary/25 ring-1 ring-primary/10 shadow-[0_0_15px_rgba(37,99,235,0.08)] h-full">
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <h3 className="text-xl font-bold text-foreground">Smart Recommendations</h3>
@@ -356,13 +356,13 @@ const Index = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {recommendations.length > 0 ? recommendations.map((rec) => (
-                  <div key={rec.id} onClick={() => navigate(rec.link)} className="group relative rounded-2xl border border-border/50 bg-secondary/10 p-5 pr-12 transition-all hover:border-primary/30 hover:bg-primary/5 cursor-pointer">
+                  <div key={rec.id} onClick={() => navigate(rec.link)} className="group relative rounded-2xl border border-primary/15 ring-1 ring-primary/5 bg-white/30 backdrop-blur-md p-5 pr-12 transition-all hover:border-primary/45 hover:bg-white/50 cursor-pointer shadow-sm">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-lg shadow-primary/5">
                       <FolderOpen className="h-5 w-5" />
                     </div>
                     <h4 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">{rec.title}</h4>
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1.5">{rec.type}</p>
-                    <div className="mt-4 inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black text-emerald-500 border border-emerald-500/10">
+                    <div className="mt-4 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-black text-primary border border-primary/20">
                        {rec.match}
                     </div>
                     <ArrowUpRight className="absolute top-5 right-5 h-4 w-4 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -378,7 +378,7 @@ const Index = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="md:col-span-2">
-            <GlassCard className="h-full">
+            <GlassCard className="border border-primary/25 ring-1 ring-primary/10 shadow-[0_0_15px_rgba(37,99,235,0.08)] h-full">
                <div className="flex items-center justify-between mb-6">
                 <h3 className="text-base font-bold text-foreground">Activity Feed</h3>
                 <BarChart3 className="h-4 w-4 text-muted-foreground" />
@@ -392,7 +392,7 @@ const Index = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 * i }}
                       onClick={() => act.link && navigate(act.link)}
-                      className="group flex items-center gap-4 rounded-xl p-3 transition-all hover:bg-secondary/30 hover:translate-x-1 cursor-pointer"
+                      className="group flex items-center gap-4 rounded-xl p-3 transition-all hover:bg-white/40 hover:backdrop-blur-sm border border-transparent hover:border-primary/15 hover:translate-x-1 cursor-pointer"
                     >
                       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl shadow-lg shadow-black/5 ${act.color}`}>
                         <act.icon className="h-4 w-4" />
@@ -414,7 +414,7 @@ const Index = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="lg:col-span-2">
-            <GlassCard className="h-full overflow-hidden relative">
+            <GlassCard className="border border-primary/25 ring-1 ring-primary/10 shadow-[0_0_15px_rgba(37,99,235,0.08)] h-full overflow-hidden relative">
               <div className="absolute top-0 right-0 h-40 w-40 bg-primary/5 blur-[50px] rounded-full" />
               <div className="flex items-center justify-between mb-6 relative z-10">
                 <div className="flex items-center gap-2">
@@ -441,8 +441,8 @@ const Index = () => {
                       initial={{ opacity: 0, scale: 0.98 }}
                       animate={{ opacity: 1, scale: 1 }}
                       onClick={() => n.link && navigate(n.link)}
-                      className={`group flex items-center gap-3 rounded-2xl border p-4 cursor-pointer transition-all hover:border-primary/50 ${
-                        n.is_read ? "border-border/30 bg-secondary/10 opacity-70" : "border-primary/20 bg-primary/5 shadow-inner"
+                      className={`group flex items-center gap-3 rounded-2xl border cursor-pointer transition-all hover:border-primary/55 hover:bg-white/30 backdrop-blur-sm p-4 ${
+                        n.is_read ? "border-primary/10 bg-white/20 opacity-70" : "border-primary/25 bg-primary/5 shadow-inner"
                       }`}
                     >
                       <div className={`h-2 w-2 rounded-full flex-shrink-0 ${n.is_read ? "bg-muted-foreground/30" : "bg-primary shadow-lg shadow-primary/20"}`} />

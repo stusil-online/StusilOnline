@@ -47,7 +47,7 @@ export default function Leaderboard() {
         <motion.div 
            initial={{ opacity: 0, y: 20 }} 
            animate={{ opacity: 1, y: 0 }}
-           className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-primary/20 via-background to-purple-500/10 border border-primary/20 p-6 md:p-12 lg:p-16 text-center mb-10 md:mb-16 shadow-2xl"
+           className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3rem] bg-gradient-to-br from-primary/20 via-background to-cyan-500/10 border border-primary/20 p-6 md:p-12 lg:p-16 text-center mb-10 md:mb-16 shadow-2xl"
         >
            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent pointer-none" />
            <Trophy className="h-12 w-12 md:h-16 md:w-16 text-primary mx-auto mb-4 md:mb-6 animate-bounce-subtle" />
@@ -120,7 +120,7 @@ export default function Leaderboard() {
           {/* Top Projects Sidebar */}
           <div className="lg:col-span-4 space-y-8">
              <div className="flex items-center gap-3 px-2 mb-8">
-                <Flame className="h-6 w-6 text-amber-500 animate-pulse" />
+                <Flame className="h-6 w-6 text-cyan-500 animate-pulse" />
                 <h2 className="text-xl font-black text-foreground">Hot Projects</h2>
              </div>
              
@@ -134,16 +134,16 @@ export default function Leaderboard() {
                     onClick={() => navigate(`/projects?project=${p.id}`)}
                     className="group cursor-pointer"
                   >
-                    <GlassCard className="p-6 border-amber-500/20 glass-card-hover relative overflow-hidden">
-                       <div className="absolute top-0 right-0 h-1 w-full bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
-                       <span className="text-[8px] font-black uppercase tracking-[0.3em] text-amber-500 mb-3 block">{p.field}</span>
-                       <h4 className="text-base font-black text-foreground mb-4 group-hover:text-amber-500 transition-colors line-clamp-1">{p.title}</h4>
+                    <GlassCard className="p-6 border-cyan-500/20 glass-card-hover relative overflow-hidden">
+                       <div className="absolute top-0 right-0 h-1 w-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+                       <span className="text-[8px] font-black uppercase tracking-[0.3em] text-cyan-600 mb-3 block">{p.field}</span>
+                       <h4 className="text-base font-black text-foreground mb-4 group-hover:text-cyan-600 transition-colors line-clamp-1">{p.title}</h4>
                        <div className="flex items-center justify-between pt-4 border-t border-border/30">
                           <div className="flex items-center gap-2">
                              <div className="h-5 w-5 rounded-lg bg-secondary flex items-center justify-center text-[8px] font-black text-muted-foreground uppercase">{(p.owner?.full_name || p.owner?.username || "U").substring(0, 1)}</div>
                              <span className="text-[9px] font-bold text-muted-foreground uppercase">{p.owner?.full_name?.split('@')[0].split(' ')[0] || p.owner?.username?.split('@')[0] || "User"}</span>
                           </div>
-                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-black text-amber-500">
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-black text-cyan-650">
                              <Star className="h-3 w-3 fill-current" /> {p.stars}
                           </div>
                        </div>
@@ -152,8 +152,8 @@ export default function Leaderboard() {
                 ))}
              </div>
 
-             <GlassCard className="p-8 bg-gradient-to-br from-purple-500/10 to-transparent border-purple-500/20 text-center">
-                <Code className="h-8 w-8 text-purple-500 mx-auto mb-4" />
+             <GlassCard className="p-8 bg-gradient-to-br from-indigo-500/10 to-transparent border-indigo-500/20 text-center">
+                <Code className="h-8 w-8 text-indigo-500 mx-auto mb-4" />
                 <h3 className="text-sm font-black uppercase tracking-widest text-foreground mb-2">Build for Rankings</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed mb-6">
                   Projects with detailed documentation and consistent updates gain XP faster. Top innovators get exclusive Beta feature access.

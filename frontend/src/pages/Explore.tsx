@@ -8,8 +8,8 @@ import {
 
 const publicProjects = [
   { id: 1, title: "AI Campus Navigator", author: "Sarah Chen", tags: ["AI", "Python"], likes: 24, desc: "ML-powered campus navigation.", color: "from-primary to-glow-secondary" },
-  { id: 2, title: "StudySwap", author: "Marcus Lee", tags: ["React", "Node.js"], likes: 41, desc: "Peer-to-peer skill exchange.", color: "from-emerald-500 to-teal-500" },
-  { id: 3, title: "Carbon Tracker", author: "Aisha Patel", tags: ["IoT", "Data"], likes: 18, desc: "Track campus carbon footprint.", color: "from-amber-500 to-orange-500" },
+  { id: 2, title: "StudySwap", author: "Marcus Lee", tags: ["React", "Node.js"], likes: 41, desc: "Peer-to-peer skill exchange.", color: "from-blue-600 to-cyan-500" },
+  { id: 3, title: "Carbon Tracker", author: "Aisha Patel", tags: ["IoT", "Data"], likes: 18, desc: "Track campus carbon footprint.", color: "from-indigo-600 to-blue-500" },
 ];
 
 const featuredProjects = [
@@ -51,7 +51,7 @@ export default function Explore() {
         className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-20 text-center lg:pt-32"
       >
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/50 bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Now in Beta
+          <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" /> Now in Beta
         </div>
         <h1 className="heading-tight text-4xl font-bold text-foreground sm:text-5xl lg:text-6xl">
           Where student ideas{" "}
