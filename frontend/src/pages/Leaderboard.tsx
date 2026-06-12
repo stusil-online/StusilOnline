@@ -92,7 +92,7 @@ export default function Leaderboard() {
                           )}
                        </div>
                        <div className="flex-1">
-                          <h3 className="text-base font-black text-foreground group-hover:text-primary transition-colors">{u.full_name}</h3>
+                          <h3 className="text-base font-black text-foreground group-hover:text-primary transition-colors">{u.full_name?.split('@')[0]}</h3>
                           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">@{u.username} • {u.country || "Earth"}</p>
                           <div className="flex items-center gap-2">
                              <span className="text-[9px] bg-secondary/50 px-2 py-0.5 rounded-full font-bold text-muted-foreground">{u.field_of_study || "Independent"}</span>
@@ -140,8 +140,8 @@ export default function Leaderboard() {
                        <h4 className="text-base font-black text-foreground mb-4 group-hover:text-amber-500 transition-colors line-clamp-1">{p.title}</h4>
                        <div className="flex items-center justify-between pt-4 border-t border-border/30">
                           <div className="flex items-center gap-2">
-                             <div className="h-5 w-5 rounded-lg bg-secondary flex items-center justify-center text-[8px] font-black text-muted-foreground uppercase">{p.owner?.full_name?.substring(0, 1) || "U"}</div>
-                             <span className="text-[9px] font-bold text-muted-foreground uppercase">{p.owner?.full_name?.split(' ')[0] || "User"}</span>
+                             <div className="h-5 w-5 rounded-lg bg-secondary flex items-center justify-center text-[8px] font-black text-muted-foreground uppercase">{(p.owner?.full_name || p.owner?.username || "U").substring(0, 1)}</div>
+                             <span className="text-[9px] font-bold text-muted-foreground uppercase">{p.owner?.full_name?.split('@')[0].split(' ')[0] || p.owner?.username?.split('@')[0] || "User"}</span>
                           </div>
                           <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-black text-amber-500">
                              <Star className="h-3 w-3 fill-current" /> {p.stars}

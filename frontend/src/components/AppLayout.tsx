@@ -121,7 +121,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Header */}
       <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between border-b border-border/30 bg-background/80 px-4 py-3 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/5 overflow-hidden">
              <img src="/logo.png" alt="Logo" className="h-4 w-4 object-contain" />
           </div>

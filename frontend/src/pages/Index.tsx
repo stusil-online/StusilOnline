@@ -171,17 +171,17 @@ const Index = () => {
                 {user?.profile_image ? (
                   <img src={user.profile_image} className="h-full w-full object-cover" />
                 ) : (
-                  user?.full_name?.substring(0, 1) || "U"
+                  (user?.full_name || user?.username || "U").substring(0, 1)
                 )}
               </div>
               <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-background bg-emerald-500 shadow-xl" />
             </div>
             <div>
               <h1 className="heading-tight text-3xl font-black text-foreground tracking-tight lg:text-4xl">
-                {user ? (user.full_name || user.username) : "Loading System..."}
+                {user ? (user.full_name?.split('@')[0] || user.username?.split('@')[0]) : "Loading System..."}
               </h1>
               <p className="mt-1 text-sm font-medium text-muted-foreground">
-                Stay updated, {user ? (user.full_name || user.username) : "Innovator"}
+                Stay updated, {user ? (user.full_name?.split('@')[0].split(' ')[0] || user.username?.split('@')[0]) : "Innovator"}
               </p>
             </div>
           </div>

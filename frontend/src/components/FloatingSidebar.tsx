@@ -81,7 +81,7 @@ export function FloatingSidebar({
       className={`fixed left-4 top-4 bottom-4 z-40 flex flex-col rounded-2xl border border-border/50 bg-card/80 backdrop-blur-xl transition-all duration-300 ${collapsed ? "w-16" : "w-56"
         }`}
     >
-      <div className="flex items-center gap-3 border-b border-border/30 px-4 py-5">
+      <div className="flex items-center gap-3 border-b border-border/30 px-4 py-5 cursor-pointer" onClick={() => navigate('/dashboard')}>
         <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/5 flex-shrink-0 overflow-hidden">
           <img src="/logo.png" alt="Stusil Logo" className="h-5 w-5 object-contain" />
         </div>
