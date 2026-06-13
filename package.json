@@ -11,5 +11,9 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "baseline-browser-mapping": "^2.10.37",
+    "caniuse-lite": "^1.0.30001799"
   }
 }

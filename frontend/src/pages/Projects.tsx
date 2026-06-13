@@ -733,9 +733,19 @@ export default function Projects() {
                           </div>
                         ) : (
                           <div className="space-y-3">
-                             <button className="w-full py-3 rounded-2xl bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
-                                Message Owner
-                             </button>
+                             <button 
+                                onClick={() => {
+                                  if (!user) {
+                                    toast.error("Please login to message the owner");
+                                    navigate("/login");
+                                    return;
+                                  }
+                                  navigate(`/messages?user=${selected.owner_id}`);
+                                }}
+                                className="w-full py-3 rounded-2xl bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
+                              >
+                                 Message Owner
+                              </button>
                              <button onClick={() => {
                                 setReportingProject(selected);
                                 setShowReportModal(true);

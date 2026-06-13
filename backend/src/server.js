@@ -12,6 +12,7 @@ const userRoutes = require('./routes/users');
 const notificationRoutes = require('./routes/notifications');
 const communityRoutes = require('./routes/community');
 const eventRoutes = require('./routes/events');
+const connectionRoutes = require('./routes/connections');
 const initSockets = require('./sockets');
 
 const app = express();
@@ -106,6 +107,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/community', communityRoutes);
 app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/connections', connectionRoutes);
 
 // Base route
 app.get('/', (req, res) => {

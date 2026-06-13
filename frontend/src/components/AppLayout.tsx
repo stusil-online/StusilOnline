@@ -134,7 +134,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Floating Realistic Futuristic bottom capsule menu - Navigation Only, Sized Bigger (In the Air) */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-auto px-5 py-3 rounded-full border border-border bg-background/85 backdrop-blur-xl shadow-[0_15px_45px_-12px_rgba(0,0,0,0.15)] flex items-center justify-center gap-4 transition-all hover:scale-[1.02] hover:shadow-[0_20px_55px_-10px_rgba(0,0,0,0.2)]">
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-auto px-3 py-2 sm:px-5 sm:py-3 rounded-full border border-border bg-background/85 backdrop-blur-xl shadow-[0_15px_45px_-12px_rgba(0,0,0,0.15)] flex items-center justify-center gap-4 transition-all hover:scale-[1.02] hover:shadow-[0_20px_55px_-10px_rgba(0,0,0,0.2)]">
         {/* Navigation items */}
         <nav className="flex items-center gap-1.5 sm:gap-2.5">
           {mainNavItems.map((item) => {
@@ -143,7 +143,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.label}
                 to={item.path}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all relative ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full text-sm font-bold transition-all relative ${
                   isActive
                     ? item.isHighlight
                       ? "bg-primary text-primary-foreground shadow-md shadow-primary/30"
@@ -153,22 +153,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                 }`}
               >
-                <item.icon className="h-4 w-4" />
-                <span>{item.label}</span>
+                <item.icon className="h-4 w-4 shrink-0" />
+                <span className="hidden sm:inline">{item.label}</span>
               </Link>
             );
           })}
           {(user?.role?.toLowerCase() === 'admin' || user?.email === 'stusil.online@gmail.com') && (
             <Link
               to="/admin"
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold transition-all ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full text-sm font-bold transition-all ${
                 location.pathname === "/admin"
                   ? "bg-secondary text-foreground border border-border/80"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
               }`}
             >
-              <SettingsIcon className="h-4 w-4" />
-              <span>Admin</span>
+              <SettingsIcon className="h-4 w-4 shrink-0" />
+              <span className="hidden sm:inline">Admin</span>
             </Link>
           )}
         </nav>

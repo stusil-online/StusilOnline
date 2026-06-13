@@ -105,3 +105,36 @@ exports.getLeaderboard = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 };
+
+exports.getStats = async (req, res) => {
+  try {
+    const activeStudents = await prisma.user.count({
+      where: { role: { not: 'admin' } }
+    });
+    const projectsBuilt = await prisma.project.count({
+      where: { visibility: 'public' }
+    });
+    const teamsFormed = await prisma.projectMember.count();
+
+    const distinctUniversities = await prisma.user.findMany({
+      where: {
+        AND: [
+          { university: { not: null } },
+          { university: { not: "" } }
+        ]
+      },
+      select: { university: true },
+      distinct: ['university']
+    });
+
+    res.json({
+      activeStudents,
+      projectsBuilt,
+      teamsFormed,
+      universities: distinctUniversities.length
+    });
+  } catch (error) {
+    console.error("Error fetching stats:", error);
+    res.status(500).json({ error: 'Failed to fetch stats' });
+  }
+};

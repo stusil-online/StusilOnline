@@ -126,12 +126,12 @@ export default function EventDetails() {
   // Use parsed details, fallback to default Polaris layout structures if empty
   const d = event.parsedDetails || {
     headline: "Build Real Solutions. Win Real Recognition.",
-    subheadline: "24-hour online challenge for high school students to solve community problems with innovation + tech",
-    challenge_desc: "STUSIL x POLARIS is a 24-hour online innovation challenge for high school students across Africa. Pick a real problem in your community → brainstorm → build a solution → submit in 24hrs. No coding experience needed. Just curiosity, teamwork, and the drive to make impact.",
+    subheadline: "One-week online challenge for high school students to solve community problems with innovation + tech",
+    challenge_desc: "STUSIL x POLARIS is a one-week online innovation challenge for high school students across Africa. Pick a real problem in your community → brainstorm → build a solution → submit in 1 week. No coding experience needed. Just curiosity, teamwork, and the drive to make impact.",
     how_it_works_1: "Register - Sign up solo or with a team of 2-4 students",
     how_it_works_2: "Problem Drop - We release real community problem statements on June 14, 9am GMT",
-    how_it_works_3: "Build for 24hrs - Ideate, design, prototype. Mentors available in Discord",
-    how_it_works_4: "Submit & Get Judged - Submit your pitch deck/video. Winners announced June 17",
+    how_it_works_3: "Build for 1 Week - Ideate, design, prototype. Mentors available in Discord",
+    how_it_works_4: "Submit & Get Judged - Submit your pitch deck/video. Winners announced June 24",
     open_to: "High school students aged 13-19 across Africa and world wide",
     format: "Individual or teams of 2-4",
     skills_needed: "None. We’ll provide templates, mentor support, and workshops before D-Day",
@@ -141,8 +141,8 @@ export default function EventDetails() {
     timeline: [
       { date: "June 1 - June 13", event: "Registration open + Pre-challenge workshops" },
       { date: "June 14, 9am GMT", event: "Challenge starts - Problem statements released" },
-      { date: "June 15, 9am GMT", event: "Submissions close" },
-      { date: "June 17", event: "Winners announced" }
+      { date: "June 21, 9am GMT", event: "Submissions close" },
+      { date: "June 24", event: "Winners announced" }
     ],
     what_you_build: "App mockup / Website prototype / Pitch deck / Video explanation / Social campaign. Focus is on problem-solving + clear thinking, not perfect code.",
     mentors_judges: "Learn from young founders, designers, and tech educators who’ve been where you are. Live Q&A + Discord support throughout the 24hrs.",
@@ -698,7 +698,7 @@ ${submission.description}`;
                   Dynamic evaluations are ongoing. Once entries close, results and scored solutions will be logged directly inside this dashboard.
                 </p>
                 <div className="bg-secondary p-4 rounded-xl text-xs text-muted-foreground inline-block border border-border/60 font-bold">
-                  🔔 Winners will be announced on June 17.
+                  🔔 Winners will be announced on June 24.
                 </div>
               </motion.div>
             )}

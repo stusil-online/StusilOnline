@@ -2,10 +2,17 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ArrowRight, Code, Rocket, Users, Zap, Search, ShieldCheck, Sun, Moon, Sparkles, ChevronDown, Star, Globe } from "lucide-react";
+import { getApiData } from "@/lib/api";
 
 export default function Landing() {
   const navigate = useNavigate();
   const [isDark, setIsDark] = useState(() => !document.documentElement.classList.contains("light"));
+  const [stats, setStats] = useState({
+    activeStudents: "10K+",
+    projectsBuilt: "2,500+",
+    teamsFormed: "500+",
+    universities: "50+"
+  });
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -13,6 +20,28 @@ export default function Landing() {
       document.documentElement.classList.add("light");
       setIsDark(false);
     }
+
+    getApiData("/api/v1/community/stats")
+      .then(data => {
+        if (data) {
+          const formatCount = (count: number, suffix = "+") => {
+            if (count === undefined || count === null) return "0";
+            if (count >= 1000) {
+              return (count / 1000).toFixed(1).replace(/\.0$/, '') + "K" + suffix;
+            }
+            return count + suffix;
+          };
+          setStats({
+            activeStudents: formatCount(data.activeStudents),
+            projectsBuilt: formatCount(data.projectsBuilt),
+            teamsFormed: formatCount(data.teamsFormed),
+            universities: formatCount(data.universities)
+          });
+        }
+      })
+      .catch(err => {
+        console.warn("Failed to fetch dynamic stats, using defaults:", err);
+      });
   }, []);
 
   const toggleTheme = () => {
@@ -168,10 +197,10 @@ export default function Landing() {
       <section className="relative z-10 border-y border-border/30 bg-card/30 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto py-8 px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { num: "10K+", label: "Active Students" },
-            { num: "2,500+", label: "Projects Built" },
-            { num: "500+", label: "Teams Formed" },
-            { num: "50+", label: "Universities" },
+            { num: stats.activeStudents, label: "Active Students" },
+            { num: stats.projectsBuilt, label: "Projects Built" },
+            { num: stats.teamsFormed, label: "Teams Formed" },
+            { num: stats.universities, label: "Universities" },
           ].map((stat, i) => (
             <motion.div
               key={i}
@@ -265,80 +294,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Featured Projects */}
-      <section className="py-28 px-6 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary">Showcase</span>
-            <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-4">Featured Student Projects</h2>
-            <p className="text-muted-foreground text-lg">See what others are building right now.</p>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { title: "EcoTrack Mobile App", field: "Computer Science", team: "4 Students", desc: "A mobile application tracking carbon footprints via machine learning.", gradient: "from-blue-600 to-cyan-500" },
-              { title: "NeuroConnect Device", field: "Biomedical Eng", team: "2 Students", desc: "Cost-effective EEG headset prototype mapping brainwave patterns.", gradient: "from-primary to-glow-secondary" },
-              { title: "Campus Thrift", field: "Business", team: "3 Students", desc: "A campus marketplace for student-to-student textbook and clothing sales.", gradient: "from-indigo-600 to-blue-500" },
-            ].map((proj, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-card overflow-hidden group hover:border-primary/30 transition-all border border-border/50"
-              >
-                <div className={`h-2 bg-gradient-to-r ${proj.gradient}`} />
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-2">{proj.title}</h3>
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-[10px] font-medium bg-primary/15 text-primary px-2 py-0.5 rounded-full">{proj.field}</span>
-                    <span className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">{proj.team}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{proj.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-12 text-center">
-            <button onClick={() => navigate("/explore")} className="glow-button-outline px-6 py-3 !rounded-full text-sm">
-              Explore All Projects
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-28 px-6 bg-secondary/5 border-y border-border/30 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary">Community</span>
-            <h2 className="text-3xl md:text-5xl font-bold mt-3 mb-4">Loved by Students</h2>
-            <p className="text-muted-foreground text-lg">Hear from the innovators shaping tomorrow.</p>
-          </motion.div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { quote: "Stusil helped me find a brilliant CS student to build the technical foundation for my tech venture. We just launched our beta!", author: "Michael T.", role: "Business Major, Stanford", stars: 5 },
-              { quote: "My public portfolio on Stusil directly landed me a summer internship. Recruiters love seeing real-world, collaborative projects.", author: "Sarah L.", role: "Software Eng, MIT", stars: 5 },
-            ].map((test, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="glass-card p-8 border border-border/50 relative">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(test.stars)].map((_, si) => (
-                    <Star key={si} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-lg leading-relaxed mb-6 relative z-10">"{test.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-primary to-glow-secondary flex items-center justify-center font-bold text-sm text-white">{test.author[0]}</div>
-                  <div>
-                    <div className="font-bold text-sm">{test.author}</div>
-                    <div className="text-xs text-muted-foreground">{test.role}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="py-28 px-6 relative z-10">
