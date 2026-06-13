@@ -193,29 +193,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Stats bar */}
-      <section className="relative z-10 border-y border-border/30 bg-card/30 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto py-8 px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { num: stats.activeStudents, label: "Active Students" },
-            { num: stats.projectsBuilt, label: "Projects Built" },
-            { num: stats.teamsFormed, label: "Teams Formed" },
-            { num: stats.universities, label: "Universities" },
-          ].map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center"
-            >
-              <p className="text-3xl font-extrabold text-foreground">{stat.num}</p>
-              <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* Features */}
       <section className="py-28 px-6 relative z-10">
