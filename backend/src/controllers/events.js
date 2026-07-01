@@ -85,6 +85,56 @@ exports.createEvent = async (req, res) => {
   }
 };
 
+exports.updateEvent = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, date, status, details } = req.body;
+
+  try {
+    const existingEvent = await prisma.event.findUnique({ where: { id } });
+    if (!existingEvent) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    const serializedDetails = typeof details === 'string' ? details : details ? JSON.stringify(details) : existingEvent.details;
+
+    const updatedEvent = await prisma.event.update({
+      where: { id },
+      data: {
+        title: title !== undefined ? title : existingEvent.title,
+        description: description !== undefined ? description : existingEvent.description,
+        date: date !== undefined ? date : existingEvent.date,
+        status: status !== undefined ? status : existingEvent.status,
+        details: serializedDetails
+      }
+    });
+
+    return res.json(updatedEvent);
+  } catch (error) {
+    console.warn('Database error while updating event, falling back to JSON file storage:', error.message || error);
+    const events = readFallbackFile();
+    const eventIndex = events.findIndex(e => e.id === id);
+    if (eventIndex === -1) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    const serializedDetails = typeof details === 'string' ? details : details ? JSON.stringify(details) : events[eventIndex].details;
+
+    const updatedEvent = {
+      ...events[eventIndex],
+      title: title !== undefined ? title : events[eventIndex].title,
+      description: description !== undefined ? description : events[eventIndex].description,
+      date: date !== undefined ? date : events[eventIndex].date,
+      status: status !== undefined ? status : events[eventIndex].status,
+      details: serializedDetails,
+    };
+    
+    events[eventIndex] = updatedEvent;
+    writeFallbackFile(events);
+    
+    return res.json(updatedEvent);
+  }
+};
+
 exports.getEventById = async (req, res) => {
   const { id } = req.params;
   try {

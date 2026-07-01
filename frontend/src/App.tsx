@@ -19,7 +19,6 @@ import GetStarted from "./pages/GetStarted";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
-import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Event from "./pages/Event";
@@ -53,7 +52,6 @@ const App = () => (
             <Route path="/community" element={<Community />} />
             <Route path="/connections" element={<Navigate to="/community" replace />} />
             <Route path="/portfolio" element={<Navigate to="/settings" replace />} />
-            <Route path="/messages" element={<Messages />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/explore" element={<Explore />} />

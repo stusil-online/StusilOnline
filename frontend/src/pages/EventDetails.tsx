@@ -694,12 +694,33 @@ ${submission.description}`;
               >
                 <Trophy className="text-amber-500 h-10 w-10 mx-auto mb-4" />
                 <h3 className="text-xl font-bold text-foreground mb-2">Standings & Results</h3>
-                <p className="text-muted-foreground text-xs max-w-md mx-auto mb-4 font-semibold">
-                  Dynamic evaluations are ongoing. Once entries close, results and scored solutions will be logged directly inside this dashboard.
-                </p>
-                <div className="bg-secondary p-4 rounded-xl text-xs text-muted-foreground inline-block border border-border/60 font-bold">
-                  🔔 Winners will be announced on June 24.
-                </div>
+                
+                {d.winners_list && d.winners_list.length > 0 ? (
+                  <div className="mt-8 space-y-4 max-w-lg mx-auto">
+                    {d.winners_list.map((winner: any, idx: number) => (
+                      <div key={idx} className="flex items-center justify-between p-4 rounded-2xl bg-secondary/50 border border-amber-500/20 shadow-sm hover:border-amber-500/50 transition-all text-left">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-amber-500/10 text-amber-500 font-black text-lg border border-amber-500/20">
+                            {idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : "⭐"}
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-0.5">{winner.place}</p>
+                            <p className="font-bold text-foreground">{winner.name}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground text-xs max-w-md mx-auto mb-4 font-semibold">
+                      Dynamic evaluations are ongoing. Once entries close, results and scored solutions will be logged directly inside this dashboard.
+                    </p>
+                    <div className="bg-secondary p-4 rounded-xl text-xs text-muted-foreground inline-block border border-border/60 font-bold">
+                      🔔 Winners will be announced on June 24.
+                    </div>
+                  </>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

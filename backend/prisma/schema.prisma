@@ -8,34 +8,32 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(uuid())
-  username       String    @unique
-  email          String    @unique
-  password_hash  String
-  full_name      String
-  university     String?
-  field_of_study String?
-  skill_level    String?
-  profile_image  String?
-  bio            String?
-  links          String? // JSON string for social links (github, linkedin, website)
-  country        String? // User's country
-  dob            String? // Date of Birth
-  role           String    @default("user")
-  is_verified    Boolean   @default(false)
-  verify_token   String?
-  reset_token    String?
-  reset_expires  DateTime?
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
+  id               String    @id @default(uuid())
+  username         String    @unique
+  email            String    @unique
+  password_hash    String
+  full_name        String
+  university       String?
+  field_of_study   String?
+  skill_level      String?
+  profile_image    String?
+  bio              String?
+  links            String? // JSON string for social links (github, linkedin, website)
+  country          String? // User's country
+  dob              String? // Date of Birth
+  discord_username String? // Discord username for DMs
+  role             String    @default("user")
+  is_verified      Boolean   @default(false)
+  verify_token     String?
+  reset_token      String?
+  reset_expires    DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
 
-  projects          Project[]        @relation("ProjectOwner")
-  project_members   ProjectMember[]
-  messages_sent     Message[]        @relation("MessageSender")
-  messages_received Message[]        @relation("MessageReceiver")
-  project_messages  ProjectMessage[]
-  applications      Application[]
-  notifications     Notification[]
+  projects      Project[]       @relation("ProjectOwner")
+  project_members ProjectMember[]
+  applications  Application[]
+  notifications Notification[]
 
   @@map("users")
 }
@@ -54,11 +52,10 @@ model Project {
   stars        Int       @default(0)
   created_at   DateTime  @default(now())
 
-  owner            User             @relation("ProjectOwner", fields: [owner_id], references: [id])
-  members          ProjectMember[]
-  project_messages ProjectMessage[]
-  roles            ProjectRole[]
-  applications     Application[]
+  owner        User          @relation("ProjectOwner", fields: [owner_id], references: [id])
+  members      ProjectMember[]
+  roles        ProjectRole[]
+  applications Application[]
 
   @@index([owner_id])
   @@map("projects")
@@ -111,37 +108,6 @@ model Application {
   @@unique([role_id, user_id])
   @@index([project_id])
   @@map("applications")
-}
-
-model Message {
-  id           String   @id @default(uuid())
-  sender_id    String
-  receiver_id  String
-  message_text String?
-  file_url     String?
-  created_at   DateTime @default(now())
-
-  sender   User @relation("MessageSender", fields: [sender_id], references: [id])
-  receiver User @relation("MessageReceiver", fields: [receiver_id], references: [id])
-
-  @@index([sender_id])
-  @@index([receiver_id])
-  @@map("messages")
-}
-
-model ProjectMessage {
-  id           String   @id @default(uuid())
-  project_id   String
-  sender_id    String
-  message_text String
-  created_at   DateTime @default(now())
-
-  project Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
-  sender  User    @relation(fields: [sender_id], references: [id])
-
-  @@index([project_id])
-  @@index([sender_id])
-  @@map("project_messages")
 }
 
 model Notification {

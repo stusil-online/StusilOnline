@@ -50,7 +50,8 @@ export default function SettingsPage() {
           country: data.country || "",
           github: links.github || "",
           linkedin: links.linkedin || "",
-          website: links.website || ""
+          website: links.website || "",
+          discord_username: data.discord_username || ""
         });
       } catch (err) {
         console.error("Error fetching user profile data:", err);
@@ -88,6 +89,7 @@ export default function SettingsPage() {
       university: formData.university,
       field_of_study: formData.field_of_study,
       country: formData.country,
+      discord_username: formData.discord_username,
       links: JSON.stringify(links)
     };
 
@@ -466,6 +468,18 @@ export default function SettingsPage() {
                           value={formData.github}
                           onChange={handleInputChange}
                           placeholder="https://github.com/username"
+                          className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-zinc-400 shadow-sm"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-bold text-zinc-700">Discord Username</label>
+                        <input
+                          type="text"
+                          name="discord_username"
+                          value={formData.discord_username}
+                          onChange={handleInputChange}
+                          placeholder="e.g. johndoe#1234 or johndoe"
                           className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-zinc-400 shadow-sm"
                         />
                       </div>

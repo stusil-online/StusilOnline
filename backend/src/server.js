@@ -6,7 +6,6 @@ const { Server } = require('socket.io');
 const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
-const messageRoutes = require('./routes/messages');
 const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/users');
 const notificationRoutes = require('./routes/notifications');
@@ -101,7 +100,6 @@ initSockets(io);
 // API Routes
 app.use('/api/v1/auth', authLimiter, authRoutes);
 app.use('/api/v1/projects', projectRoutes);
-app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/notifications', notificationRoutes);

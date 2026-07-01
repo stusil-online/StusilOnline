@@ -6,7 +6,7 @@ const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/e
 
 exports.signup = async (req, res) => {
   try {
-    const { email, password, username, full_name, university, country, dob, field_of_study, skill_level, bio, profile_image } = req.body;
+    const { email, password, username, full_name, university, country, dob, field_of_study, skill_level, bio, profile_image, discord_username } = req.body;
     
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,6 +44,7 @@ exports.signup = async (req, res) => {
         skill_level,
         bio,
         profile_image,
+        discord_username,
         verify_token
       }
     });

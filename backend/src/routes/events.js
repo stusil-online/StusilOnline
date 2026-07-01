@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  getAllEvents, createEvent, deleteEvent, getEventById
+  getAllEvents, createEvent, deleteEvent, getEventById, updateEvent
 } = require('../controllers/events');
 const authMiddleware = require('../middleware/auth');
 const prisma = require('../services/db');
@@ -36,8 +36,9 @@ const adminMiddleware = async (req, res, next) => {
 router.get('/', getAllEvents);
 router.get('/:id', getEventById);
 
-// Admin-only routes to create/delete events
+// Admin-only routes to create/update/delete events
 router.post('/', authMiddleware, adminMiddleware, createEvent);
+router.put('/:id', authMiddleware, adminMiddleware, updateEvent);
 router.delete('/:id', authMiddleware, adminMiddleware, deleteEvent);
 
 module.exports = router;

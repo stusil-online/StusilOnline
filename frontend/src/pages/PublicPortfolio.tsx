@@ -23,6 +23,7 @@ interface UserProfile {
   username: string;
   profileImage: string | null;
   achievements: any[];
+  discord_username?: string;
 }
 
 const iconMap: Record<string, any> = {
@@ -82,6 +83,7 @@ export default function PublicPortfolio() {
             location: user.country || "Not specified",
             bio: portfolio?.bio || user.bio || "Passionate about building cool tools.",
             profileImage: user.profile_image || null,
+            discord_username: user.discord_username,
             skills: parsedSkills,
             achievements: (user.achievements || []).map((a: any) => ({
               ...a,
@@ -166,13 +168,15 @@ export default function PublicPortfolio() {
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{profile.bio}</p>
 
             <div className="mt-5 flex flex-wrap gap-3">
-              {currentUserId !== profile.id && (
-                <button 
-                  onClick={() => navigate(`/messages?user=${profile.id}`)}
+              {currentUserId !== profile.id && profile.discord_username && (
+                <a 
+                  href={`https://discord.com/users/${profile.discord_username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="glow-button flex items-center gap-2 text-xs py-2 px-4 shadow-xl shadow-primary/20"
                 >
-                  <MessageCircle className="h-4 w-4" /> Direct Message
-                </button>
+                  <MessageCircle className="h-4 w-4" /> Connect on Discord
+                </a>
               )}
             </div>
 

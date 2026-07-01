@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import {
   Users, FolderOpen, Rocket, Shield,
   Ban, Search, Trash2, X, Sparkles, Activity,
-  Calendar, Plus, LogOut, ExternalLink, ChevronDown
+  Calendar, Plus, LogOut, ExternalLink, ChevronDown, Trophy
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -88,6 +88,12 @@ export default function Admin() {
   const [deleteContext, setDeleteContext] = useState<{ type: string; id: string } | null>(null);
   const [showMemberRemoveConfirm, setShowMemberRemoveConfirm] = useState(false);
   const [memberContext, setMemberContext] = useState<{ type: "project"; parentId: string; memberId: string } | null>(null);
+
+  // Winners modal states
+  const [showWinnersModal, setShowWinnersModal] = useState(false);
+  const [winnersContext, setWinnersContext] = useState<any>(null);
+  const [winnersList, setWinnersList] = useState<{place: string, name: string}[]>([{place: "1st Place", name: ""}]);
+  const [isSavingWinners, setIsSavingWinners] = useState(false);
 
   const [growthData, setGrowthData] = useState<any[]>([]);
   const [distributionData, setDistributionData] = useState<any[]>([]);
@@ -283,6 +289,42 @@ export default function Admin() {
     } catch (err) {
       console.error("Error removing member", err);
       toast.error("Network error removing member");
+    }
+  };
+
+  const handleSaveWinners = async () => {
+    if (!winnersContext) return;
+    setIsSavingWinners(true);
+    try {
+      let details: any = {};
+      try {
+        if (winnersContext.details) {
+          details = typeof winnersContext.details === 'string' ? JSON.parse(winnersContext.details) : winnersContext.details;
+        }
+      } catch (err) {}
+      
+      const filteredWinners = winnersList.filter(w => w.name.trim() !== "");
+      details.winners_list = filteredWinners;
+
+      const res = await apiFetch(`/api/v1/events/${winnersContext.id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          details: details
+        })
+      });
+
+      if (res.ok) {
+        toast.success("Winners updated successfully");
+        setShowWinnersModal(false);
+        fetchData();
+      } else {
+        toast.error("Failed to update winners");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Network error");
+    } finally {
+      setIsSavingWinners(false);
     }
   };
 
@@ -790,16 +832,36 @@ export default function Admin() {
                           <p className="text-xs text-muted-foreground leading-relaxed font-normal">{ev.description}</p>
                         </div>
 
-                        <button
-                          onClick={() => {
-                            setDeleteContext({ type: 'event', id: ev.id });
-                            setShowDeleteConfirm(true);
-                          }}
-                          className="self-end sm:self-center flex items-center justify-center p-2.5 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:border-rose-500 hover:text-white transition-all focus:outline-none"
-                          title="Delete event"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <div className="flex flex-col sm:flex-row gap-2 self-end sm:self-center">
+                          <button
+                            onClick={() => {
+                              setWinnersContext(ev);
+                              let initialWinners = [{place: "1st Place", name: ""}];
+                              try {
+                                const details = typeof ev.details === 'string' ? JSON.parse(ev.details) : ev.details;
+                                if (details && details.winners_list && details.winners_list.length > 0) {
+                                  initialWinners = details.winners_list;
+                                }
+                              } catch(e) {}
+                              setWinnersList(initialWinners);
+                              setShowWinnersModal(true);
+                            }}
+                            className="flex items-center justify-center p-2.5 rounded-xl border border-amber-500/20 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:border-amber-500 hover:text-white transition-all focus:outline-none"
+                            title="Set Winners"
+                          >
+                            <Trophy className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setDeleteContext({ type: 'event', id: ev.id });
+                              setShowDeleteConfirm(true);
+                            }}
+                            className="flex items-center justify-center p-2.5 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-500 hover:bg-rose-500 hover:border-rose-500 hover:text-white transition-all focus:outline-none"
+                            title="Delete event"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
                       </motion.div>
                     ))}
 
@@ -834,6 +896,99 @@ export default function Admin() {
           confirmText="Revoke Access"
           variant="warning"
         />
+
+        {/* Winners Modal */}
+        {showWinnersModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card border border-border/80 rounded-3xl p-6 md:p-8 w-full max-w-lg shadow-xl relative"
+            >
+              <button
+                onClick={() => setShowWinnersModal(false)}
+                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors p-1"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              
+              <div className="flex items-center gap-3 mb-6 border-b border-border/60 pb-4">
+                <Trophy className="h-6 w-6 text-amber-500" />
+                <h2 className="text-xl font-bold text-foreground">Set Event Winners</h2>
+              </div>
+              
+              <p className="text-sm text-muted-foreground mb-6">
+                Add the winners for <span className="font-bold text-foreground">{winnersContext?.title}</span>. These will be displayed on the event's results page.
+              </p>
+
+              <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto pr-2">
+                {winnersList.map((w, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <input
+                      type="text"
+                      placeholder="e.g. 1st Place"
+                      value={w.place}
+                      onChange={(e) => {
+                        const newList = [...winnersList];
+                        newList[index].place = e.target.value;
+                        setWinnersList(newList);
+                      }}
+                      className="w-1/3 bg-background border border-border rounded-xl px-3 py-2 text-sm text-foreground focus:border-primary/50 outline-none"
+                    />
+                    <input
+                      type="text"
+                      placeholder="e.g. Team Alpha or John Doe"
+                      value={w.name}
+                      onChange={(e) => {
+                        const newList = [...winnersList];
+                        newList[index].name = e.target.value;
+                        setWinnersList(newList);
+                      }}
+                      className="flex-1 bg-background border border-border rounded-xl px-3 py-2 text-sm text-foreground focus:border-primary/50 outline-none"
+                    />
+                    <button
+                      onClick={() => {
+                        const newList = winnersList.filter((_, i) => i !== index);
+                        setWinnersList(newList);
+                      }}
+                      className="p-2 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setWinnersList([...winnersList, { place: "", name: "" }])}
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border border-dashed border-border/80 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors mt-2"
+                >
+                  <Plus className="h-4 w-4" /> Add Winner
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3 justify-end">
+                <button
+                  onClick={() => setShowWinnersModal(false)}
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold text-muted-foreground bg-secondary hover:bg-secondary/80 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveWinners}
+                  disabled={isSavingWinners}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-primary hover:opacity-90 disabled:opacity-50 transition-colors shadow-lg shadow-primary/20"
+                >
+                  {isSavingWinners ? (
+                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>Save Winners</>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </motion.div>
     </main>
   </div>

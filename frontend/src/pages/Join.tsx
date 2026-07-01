@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 export default function Join() {
   const [form, setForm] = useState({
-    name: "", email: "", password: "",
+    name: "", email: "", password: "", discord_username: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function Join() {
         country: storedAnswers.country || "Earth",
         dob: storedAnswers.dob || "2000-01-01",
         field_of_study: storedAnswers.field || "Not Specified",
+        discord_username: form.discord_username,
         bio: `Role: ${storedAnswers.role || "Student"} | Goal: ${storedAnswers.goal || "Build projects"} | Skill Level: ${storedAnswers.skill || "Beginner"} | Lab: ${storedAnswers.lab || "Core"}`,
       };
 
@@ -120,6 +121,20 @@ export default function Join() {
                       value={form.email} 
                       onChange={(e) => setForm({ ...form, email: e.target.value })} 
                       placeholder="you@university.edu" 
+                      className="flex-1 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400" 
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-zinc-700">Discord Username (Optional)</label>
+                  <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/85 px-4 py-3 focus-within:border-primary/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 transition-all shadow-sm">
+                    <User className="h-4.5 w-4.5 text-zinc-400" />
+                    <input 
+                      type="text" 
+                      value={form.discord_username} 
+                      onChange={(e) => setForm({ ...form, discord_username: e.target.value })} 
+                      placeholder="e.g. johndoe#1234 or johndoe" 
                       className="flex-1 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400" 
                     />
                   </div>
