@@ -22,7 +22,7 @@ frontend/dist-tsc/
 backend/dist/
 
 # Prisma
-backend/prisma/migrations/
+
 *.db
 *.db-journal
 *.sqlite
