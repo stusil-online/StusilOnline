@@ -753,6 +753,7 @@ export default function Admin() {
                         className="w-full bg-background border border-border hover:border-border/80 focus:border-primary rounded-xl pl-11 pr-10 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all appearance-none cursor-pointer"
                       >
                         <option value="upcoming">Upcoming</option>
+                        <option value="ongoing">Ongoing</option>
                         <option value="completed">Completed</option>
                       </select>
                       <ChevronDown className="absolute right-3.5 pointer-events-none h-4 w-4 text-muted-foreground" />

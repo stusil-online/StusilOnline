@@ -63,10 +63,12 @@ export default function Event() {
           </div>
         ) : (
           /* Directory Column Layout */
-          <section className="max-w-2xl mx-auto w-full px-4 relative z-10">
+          <section className="max-w-2xl mx-auto w-full px-4 relative z-10 space-y-16">
+            
+            {/* UPCOMING */}
             <div className="space-y-6">
               <h2 className="text-xl font-black text-foreground flex items-center gap-2.5 px-1 border-l-2 border-primary pl-3 tracking-tight">
-                <span className="h-2 w-2 rounded-full bg-primary animate-ping" /> Upcoming Sprints
+                <span className="h-2 w-2 rounded-full bg-primary animate-ping" /> Upcoming events or Competition
               </h2>
               
               <div className="space-y-6">
@@ -80,7 +82,7 @@ export default function Event() {
                     
                     <div className="flex justify-between items-start gap-4 mb-4 relative z-10">
                       <span className="text-[10px] font-black text-primary uppercase bg-primary/10 px-3 py-1 rounded-full border border-primary/25 tracking-widest flex items-center gap-1.5 shadow-sm">
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live Sprint
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Upcoming Sprint
                       </span>
                       <span className="text-xs text-muted-foreground font-bold flex items-center gap-1.5 bg-secondary/80 px-3 py-1 rounded-full border border-border/40">
                         <Clock className="h-3.5 w-3.5 text-primary" /> {ev.date}
@@ -96,7 +98,7 @@ export default function Event() {
                     </p>
                     
                     <div className="flex items-center gap-2 text-xs font-bold text-primary group-hover:translate-x-1 transition-transform">
-                      <span>Enter Workspace & Draft Submission</span> <ArrowRight className="h-4 w-4" />
+                      <span>View details & Prepare</span> <ArrowRight className="h-4 w-4" />
                     </div>
                   </Link>
                 ))}
@@ -105,6 +107,98 @@ export default function Event() {
                   <div className="p-12 text-center text-xs text-muted-foreground border-2 border-dashed border-border/60 rounded-[2rem] font-medium bg-card/50">
                     <Calendar className="h-8 w-8 mx-auto mb-3 text-muted-foreground/45" />
                     No upcoming sprints scheduled. Check back later!
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ONGOING */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-black text-foreground flex items-center gap-2.5 px-1 border-l-2 border-emerald-500 pl-3 tracking-tight">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Ongoing events or Competition
+              </h2>
+              
+              <div className="space-y-6">
+                {events.filter(e => e.status === 'ongoing').map((ev) => (
+                  <Link 
+                    key={ev.id}
+                    to={`/event/${ev.id}`}
+                    className="block p-8 rounded-[2.5rem] border border-emerald-500/20 bg-card hover:border-emerald-500/60 hover:bg-emerald-500/5 text-left transition-all hover:scale-[1.02] shadow-lg shadow-black/[0.02] hover:shadow-emerald-500/5 relative overflow-hidden group"
+                  >
+                    <div className="absolute -top-12 -right-12 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors pointer-events-none" />
+                    
+                    <div className="flex justify-between items-start gap-4 mb-4 relative z-10">
+                      <span className="text-[10px] font-black text-emerald-500 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/25 tracking-widest flex items-center gap-1.5 shadow-sm">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live Sprint
+                      </span>
+                      <span className="text-xs text-muted-foreground font-bold flex items-center gap-1.5 bg-secondary/80 px-3 py-1 rounded-full border border-border/40">
+                        <Clock className="h-3.5 w-3.5 text-emerald-500" /> {ev.date}
+                      </span>
+                    </div>
+                    
+                    <h3 className="font-black text-xl md:text-2xl text-foreground mb-3 group-hover:text-emerald-500 transition-colors tracking-tight leading-tight">
+                      {ev.title}
+                    </h3>
+                    
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-6 font-medium pr-4">
+                      {ev.description}
+                    </p>
+                    
+                    <div className="flex items-center gap-2 text-xs font-bold text-emerald-500 group-hover:translate-x-1 transition-transform">
+                      <span>Enter Workspace & Draft Submission</span> <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </Link>
+                ))}
+                
+                {events.filter(e => e.status === 'ongoing').length === 0 && (
+                  <div className="p-12 text-center text-xs text-muted-foreground border-2 border-dashed border-border/60 rounded-[2rem] font-medium bg-card/50">
+                    <Sparkles className="h-8 w-8 mx-auto mb-3 text-muted-foreground/45" />
+                    No events currently in progress.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ENDED */}
+            <div className="space-y-6">
+              <h2 className="text-xl font-black text-foreground flex items-center gap-2.5 px-1 border-l-2 border-muted-foreground pl-3 tracking-tight">
+                <span className="h-2 w-2 rounded-full bg-muted-foreground" /> Ended Events or Competition
+              </h2>
+              
+              <div className="space-y-6">
+                {events.filter(e => e.status === 'completed' || e.status === 'ended').map((ev) => (
+                  <Link 
+                    key={ev.id}
+                    to={`/event/${ev.id}`}
+                    className="block p-8 rounded-[2.5rem] border border-border/50 bg-secondary/10 hover:border-border hover:bg-secondary/30 text-left transition-all hover:scale-[1.02] relative overflow-hidden group opacity-80 hover:opacity-100"
+                  >
+                    <div className="flex justify-between items-start gap-4 mb-4 relative z-10">
+                      <span className="text-[10px] font-black text-muted-foreground uppercase bg-secondary px-3 py-1 rounded-full border border-border/50 tracking-widest flex items-center gap-1.5 shadow-sm">
+                        <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" /> Ended
+                      </span>
+                      <span className="text-xs text-muted-foreground font-bold flex items-center gap-1.5 bg-secondary/80 px-3 py-1 rounded-full border border-border/40">
+                        <Clock className="h-3.5 w-3.5 text-muted-foreground" /> {ev.date}
+                      </span>
+                    </div>
+                    
+                    <h3 className="font-black text-xl md:text-2xl text-foreground mb-3 transition-colors tracking-tight leading-tight">
+                      {ev.title}
+                    </h3>
+                    
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-6 font-medium pr-4">
+                      {ev.description}
+                    </p>
+                    
+                    <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground group-hover:translate-x-1 transition-transform">
+                      <span>View Results & Archives</span> <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </Link>
+                ))}
+                
+                {events.filter(e => e.status === 'completed' || e.status === 'ended').length === 0 && (
+                  <div className="p-12 text-center text-xs text-muted-foreground border-2 border-dashed border-border/60 rounded-[2rem] font-medium bg-card/50">
+                    <Trophy className="h-8 w-8 mx-auto mb-3 text-muted-foreground/45" />
+                    No past events to show yet.
                   </div>
                 )}
               </div>
