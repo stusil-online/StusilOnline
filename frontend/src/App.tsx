@@ -12,7 +12,6 @@ import Login from "./pages/Login";
 import Join from "./pages/Join";
 import PublicPortfolio from "./pages/PublicPortfolio";
 import About from "./pages/About";
-import Explore from "./pages/Explore";
 import Leaderboard from "./pages/Leaderboard";
 import NotFound from "./pages/NotFound";
 import GetStarted from "./pages/GetStarted";
@@ -54,7 +53,6 @@ const App = () => (
             <Route path="/portfolio" element={<Navigate to="/settings" replace />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/admin" element={<Admin />} />
-            <Route path="/explore" element={<Explore />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/polaris" element={<Navigate to="/event" replace />} />
             <Route path="/event" element={<Event />} />
