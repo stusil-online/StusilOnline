@@ -66,6 +66,7 @@ const Index = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [recentUpdates, setRecentUpdates] = useState<any[]>([]);
   const socketRef = useRef<Socket | null>(null);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
 
@@ -89,22 +90,32 @@ const Index = () => {
 
         const nData = await getApiData("/api/v1/notifications");
         setNotifications(Array.isArray(nData) ? nData.slice(0, 5) : []); 
-        setUnreadCount(nData.filter((n: NotificationType) => !n.is_read).length);
+        setUnreadCount(Array.isArray(nData) ? nData.filter((n: NotificationType) => !n.is_read).length : 0);
         
-        if (Array.isArray(nData)) {
-          const actItems: ActivityItem[] = nData.slice(0, 5).map((n: NotificationType) => ({
-            id: n.id,
-            icon: n.type === "application" ? Briefcase : n.type === "accepted" ? Check : n.type === "connection" ? Users : Bell,
-            label: n.body,
-            time: timeAgo(n.created_at),
-            color: n.type === "accepted" ? "text-cyan-600 bg-cyan-500/10" : n.type === "application" ? "text-primary bg-primary/10" : "text-indigo-500 bg-indigo-500/10",
-            link: n.link || undefined,
-          }));
-          setActivity(actItems);
-        }
-
         const allProj = await getApiData("/api/v1/projects");
         
+        if (Array.isArray(allProj)) {
+          // Use recent projects for Activity Feed
+          const actItems: ActivityItem[] = allProj.slice(0, 5).map((p: any) => ({
+            id: p.id,
+            icon: FolderOpen,
+            label: `New Venture: ${p.title}`,
+            time: timeAgo(p.created_at),
+            color: "text-emerald-500 bg-emerald-500/10",
+            link: `/projects?project=${p.id}`,
+          }));
+          setActivity(actItems);
+          
+          // Set recent updates for Live Alerts fallback
+          setRecentUpdates(allProj.slice(0, 4).map(p => ({
+            id: `upd-${p.id}`,
+            title: "Platform Update",
+            body: `${p.owner?.full_name || 'Someone'} launched ${p.title}`,
+            link: `/projects?project=${p.id}`,
+            created_at: p.created_at
+          })));
+        }
+
         const recs: Recommendation[] = [];
         if (Array.isArray(allProj)) {
           for (const p of allProj.slice(0, 15)) {
@@ -452,6 +463,23 @@ const Index = () => {
                           <p className="text-[9px] font-bold text-muted-foreground uppercase">{timeAgo(n.created_at)}</p>
                         </div>
                         <p className="text-xs text-muted-foreground line-clamp-1 group-hover:text-foreground transition-colors font-medium">{n.body}</p>
+                      </div>
+                    </motion.div>
+                  )) : recentUpdates.length > 0 ? recentUpdates.map((u) => (
+                    <motion.div
+                      key={u.id}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      onClick={() => u.link && navigate(u.link)}
+                      className="group flex items-center gap-3 rounded-2xl border cursor-pointer transition-all hover:border-primary/55 hover:bg-white/30 backdrop-blur-sm p-4 border-primary/10 bg-white/20 opacity-70"
+                    >
+                      <div className="h-2 w-2 rounded-full flex-shrink-0 bg-emerald-500/50" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <p className="text-xs font-black text-foreground uppercase tracking-tight">{u.title}</p>
+                          <p className="text-[9px] font-bold text-muted-foreground uppercase">{timeAgo(u.created_at)}</p>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-1 group-hover:text-foreground transition-colors font-medium">{u.body}</p>
                       </div>
                     </motion.div>
                   )) : (
