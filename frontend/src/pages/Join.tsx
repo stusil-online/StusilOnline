@@ -19,7 +19,7 @@ export default function Join() {
   }, []);
 
   const canSubmit = () => {
-    return form.name && form.email && form.password;
+    return form.name && form.email && form.password && form.discord_username;
   };
 
   const handleFinish = async (e?: React.FormEvent) => {
@@ -127,10 +127,11 @@ export default function Join() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-bold text-zinc-700">Discord Username (Optional)</label>
+                  <label className="text-xs font-bold text-zinc-700">Discord Username</label>
                   <div className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white/85 px-4 py-3 focus-within:border-primary/50 focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 transition-all shadow-sm">
                     <User className="h-4.5 w-4.5 text-zinc-400" />
                     <input 
+                      required
                       type="text" 
                       value={form.discord_username} 
                       onChange={(e) => setForm({ ...form, discord_username: e.target.value })} 

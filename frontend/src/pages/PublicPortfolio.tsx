@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ExternalLink, Calendar, Star, Github, Linkedin, Globe, Mail,
-  MapPin, Code, Briefcase, Award, MessageCircle, ArrowRight, Rocket, Users, Lightbulb, Zap, ArrowUpRight
+  MapPin, Code, Briefcase, Award, MessageCircle, ArrowRight, Rocket, Users, Lightbulb, Zap, ArrowUpRight,
+  X, Copy, Check
 } from "lucide-react";
 import { AppLayout } from "@/components/AppLayout";
 import { GlassCard } from "@/components/GlassCard";
@@ -140,6 +141,10 @@ export default function PublicPortfolio() {
     );
   }
 
+  const [showDiscordPopup, setShowDiscordPopup] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const connectMessage = "Hey! I saw your profile on Stusil and wanted to connect with you.";
+
   const socialLinks = [
     { icon: Github, url: profile.links.github, label: "GitHub" },
     { icon: Linkedin, url: profile.links.linkedin, label: "LinkedIn" },
@@ -169,14 +174,12 @@ export default function PublicPortfolio() {
 
             <div className="mt-5 flex flex-wrap gap-3">
               {currentUserId !== profile.id && profile.discord_username && (
-                <a 
-                  href={`https://discord.com/users/${profile.discord_username}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => setShowDiscordPopup(true)}
                   className="glow-button flex items-center gap-2 text-xs py-2 px-4 shadow-xl shadow-primary/20"
                 >
                   <MessageCircle className="h-4 w-4" /> Connect on Discord
-                </a>
+                </button>
               )}
             </div>
 
@@ -265,6 +268,53 @@ export default function PublicPortfolio() {
           </div>
         )}
       </motion.div>
+
+      {/* Discord Connect Popup */}
+      <AnimatePresence>
+        {showDiscordPopup && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm" onClick={() => setShowDiscordPopup(false)} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="fixed inset-0 z-[60] flex items-center justify-center px-4 pointer-events-none"
+            >
+              <div className="glass-card border border-border/50 p-6 shadow-2xl w-full max-w-sm pointer-events-auto flex flex-col items-center text-center">
+                <div className="flex w-full justify-between items-center mb-4">
+                  <h3 className="font-bold text-foreground">Connect on Discord</h3>
+                  <button onClick={() => setShowDiscordPopup(false)} className="rounded-xl p-2 text-muted-foreground hover:bg-secondary"><X className="h-4 w-4" /></button>
+                </div>
+                <div className="bg-secondary/50 rounded-xl p-4 text-sm text-foreground w-full mb-4 border border-border/50 text-left">
+                  {connectMessage}
+                </div>
+                <div className="flex gap-3 w-full">
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(connectMessage);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl bg-secondary hover:bg-secondary/80 text-sm font-bold transition-all border border-border/50"
+                  >
+                    {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                    {copied ? "Copied!" : "Copy Message"}
+                  </button>
+                  <a 
+                    href={`https://discord.com/users/${profile.discord_username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowDiscordPopup(false)}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-bold transition-all shadow-md shadow-primary/20"
+                  >
+                    Open Discord <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </AppLayout>
   );
 }

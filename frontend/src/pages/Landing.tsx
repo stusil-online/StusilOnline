@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ArrowRight, Code, Rocket, Users, Zap, Search, ShieldCheck, Sun, Moon, Sparkles, ChevronDown, Star, Globe } from "lucide-react";
+import { ArrowRight, Code, Rocket, Users, Zap, Search, ShieldCheck, Sun, Moon, Sparkles, ChevronDown, Star, Globe, Award } from "lucide-react";
 import { getApiData } from "@/lib/api";
 
 export default function Landing() {
@@ -193,6 +193,70 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Showcase / Recent Competition */}
+      <section className="py-20 px-6 relative z-10 border-y border-border/30 bg-secondary/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="md:w-1/2">
+              <span className="inline-flex items-center gap-2 px-3 py-1 mb-4 text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 rounded-full uppercase tracking-widest">
+                <Award className="h-3 w-3" /> Recent Competition
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+                STUSIL x POLARIS <br/>
+                <span className="text-muted-foreground">1-Week Challenge</span>
+              </h2>
+              <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                We challenged students to pick a real community problem, brainstorm, and build a solution in just 1 week. The results were incredible.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="glass-card p-4 border border-border/50 text-center rounded-2xl">
+                  <p className="text-3xl font-black text-foreground">55+</p>
+                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-widest mt-1">Registrations</p>
+                </div>
+                <div className="glass-card p-4 border border-border/50 text-center rounded-2xl">
+                  <p className="text-3xl font-black text-foreground">15+</p>
+                  <p className="text-xs text-muted-foreground font-semibold uppercase tracking-widest mt-1">Submissions</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="md:w-1/2 w-full">
+              <div className="glass-card border border-border/50 p-6 md:p-8 rounded-[2rem] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px]" />
+                <h3 className="text-lg font-black uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                  <Star className="h-5 w-5" /> Hall of Fame
+                </h3>
+                
+                <div className="space-y-4 relative z-10">
+                  {[
+                    { place: "1st Place", name: "Nirvana Ghezaei", project: "Saudi Arabia Project", color: "from-amber-400/20 to-orange-500/10" },
+                    { place: "2nd Place", name: "Angel", project: "India Project: ITP Diagnostic Test", color: "from-slate-300/20 to-gray-400/10" },
+                    { place: "3rd Place", name: "Milson Neill", project: "England Project: REVIZELY.AI", color: "from-amber-700/20 to-yellow-800/10" }
+                  ].map((winner, i) => (
+                    <div key={i} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-border/50 bg-gradient-to-r ${winner.color} hover:border-primary/30 transition-all`}>
+                      <div className="flex items-center gap-3 mb-2 sm:mb-0">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-background border border-border/50 text-xs font-black shadow-sm">
+                          {i + 1}
+                        </span>
+                        <div>
+                          <p className="text-sm font-bold text-foreground">{winner.name}</p>
+                          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">{winner.place}</p>
+                        </div>
+                      </div>
+                      <div className="sm:text-right">
+                        <span className="inline-block rounded-lg bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground border border-border/50">
+                          {winner.project}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Features */}
       <section className="py-28 px-6 relative z-10">
