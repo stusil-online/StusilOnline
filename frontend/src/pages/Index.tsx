@@ -41,7 +41,6 @@ interface Recommendation {
 const quickActions = [
   { label: "New Project", icon: Plus, color: "text-primary", path: "/projects" },
   { label: "Find Team", icon: Search, color: "text-glow-secondary", path: "/community" },
-  { label: "Explore", icon: Star, color: "text-indigo-500", path: "/explore" },
   { label: "Messages", icon: MessageCircle, color: "text-cyan-500", path: "/messages" },
 ];
 
