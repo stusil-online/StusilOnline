@@ -421,12 +421,12 @@ export default function Admin() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 rounded-2xl bg-secondary/80 p-1.5 border border-border/80 overflow-x-auto backdrop-blur-md shadow-inner">
+            <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-secondary/80 p-1.5 border border-border/80 backdrop-blur-md shadow-inner">
               {(["overview", "users", "projects", "events"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => { setTab(t as any); setSearch(""); }}
-                className={`rounded-xl px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-all shrink-0 ${
+                className={`rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all sm:px-5 sm:py-2.5 flex-1 sm:flex-none text-center ${
                   tab === t 
                     ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
                     : "text-muted-foreground hover:bg-secondary/40 hover:text-foreground"
