@@ -735,16 +735,11 @@ export default function Projects() {
                           <div className="space-y-3">
                              <button 
                                 onClick={() => {
-                                  if (!user) {
-                                    toast.error("Please login to message the owner");
-                                    navigate("/login");
-                                    return;
-                                  }
-                                  navigate(`/messages?user=${selected.owner_id}`);
+                                  window.open("https://discord.gg/5JeGw3XRA", "_blank");
                                 }}
                                 className="w-full py-3 rounded-2xl bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
                               >
-                                 Message Owner
+                                 Connect on Discord
                               </button>
                              <button onClick={() => {
                                 setReportingProject(selected);
