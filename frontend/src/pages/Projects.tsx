@@ -494,18 +494,28 @@ export default function Projects() {
                     <p className="mb-4 text-xs font-medium text-muted-foreground line-clamp-2 leading-relaxed">{project.description}</p>
                     
                     <div className="mt-auto space-y-4">
-                       {/* Roles Preview */}
-                       <div className="flex flex-wrap gap-2">
-                          {openRoles.slice(0, 2).map((r, ri) => (
-                             <div key={ri} className="flex items-center gap-1.5 rounded-xl border border-border/50 bg-secondary/30 px-3 py-1.5">
-                                <span className={`h-1.5 w-1.5 rounded-full ${ri === 0 ? 'bg-primary' : 'bg-glow-secondary'}`} />
-                                <span className="text-[10px] font-bold text-foreground/80 uppercase">{r.title}</span>
-                             </div>
-                          ))}
-                          {openRoles.length > 2 && (
-                            <div className="flex items-center justify-center px-2 py-1.5 rounded-xl border border-dashed border-border/50 text-[10px] font-bold text-muted-foreground">
-                               +{openRoles.length - 2}
-                            </div>
+                       {/* Roles Preview & Stage */}
+                       <div className="flex flex-wrap items-center gap-2">
+                          {openRoles.length > 0 ? (
+                            <>
+                              <span className="text-[9px] font-black uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded-md border border-primary/20 flex items-center gap-1">
+                                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Recruiting
+                              </span>
+                              {openRoles.slice(0, 2).map((r, ri) => (
+                                 <div key={ri} className="flex items-center gap-1.5 rounded-xl border border-border/50 bg-secondary/30 px-3 py-1.5">
+                                    <span className="text-[10px] font-bold text-foreground/80 uppercase">{r.title}</span>
+                                 </div>
+                              ))}
+                              {openRoles.length > 2 && (
+                                <div className="flex items-center justify-center px-2 py-1.5 rounded-xl border border-dashed border-border/50 text-[10px] font-bold text-muted-foreground">
+                                   +{openRoles.length - 2}
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground bg-secondary/50 px-2 py-1 rounded-md border border-border/50 flex items-center gap-1">
+                              <Check className="h-2.5 w-2.5" /> In Progress / Team Full
+                            </span>
                           )}
                        </div>
 
