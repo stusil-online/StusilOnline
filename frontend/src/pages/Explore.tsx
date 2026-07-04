@@ -6,10 +6,12 @@ import {
   Search, Eye, Heart, MessageCircle, Code, Briefcase
 } from "lucide-react";
 import { getApiData } from "@/lib/api";
+import { AppLayout } from "@/components/AppLayout";
 
 export default function Explore() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<any[]>([]);
+  const isAuthenticated = !!localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -35,34 +37,44 @@ export default function Explore() {
     "from-cyan-600 to-sky-500",
   ];
 
-  return (
-    <div className="min-h-screen bg-background">
+  const handleProjectClick = (projectId: string) => {
+    if (isAuthenticated) {
+      navigate(`/projects?project=${projectId}`);
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const content = (
+    <div className={`min-h-screen ${isAuthenticated ? 'bg-transparent' : 'bg-background'}`}>
       {/* Ambient */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
         <div className="absolute bottom-20 right-20 h-60 w-60 rounded-full bg-glow-secondary/5 blur-[100px]" />
       </div>
 
-      {/* Nav */}
-      <nav className="relative z-10 flex items-center justify-between px-6 py-4 lg:px-12">
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/20">
-            <Sparkles className="h-4 w-4 text-primary" />
+      {/* Nav - Only show if NOT authenticated */}
+      {!isAuthenticated && (
+        <nav className="relative z-10 flex items-center justify-between px-6 py-4 lg:px-12">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/20">
+              <Sparkles className="h-4 w-4 text-primary" />
+            </div>
+            <span className="text-sm font-bold tracking-tight text-foreground">STUSIL</span>
           </div>
-          <span className="text-sm font-bold tracking-tight text-foreground">STUSIL</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link to="/login" className="glow-button-outline px-4 py-2 text-sm">Sign In</Link>
-          <Link to="/join" className="glow-button px-4 py-2 text-sm">Join Now</Link>
-        </div>
-      </nav>
+          <div className="flex items-center gap-3">
+            <Link to="/login" className="glow-button-outline px-4 py-2 text-sm">Sign In</Link>
+            <Link to="/join" className="glow-button px-4 py-2 text-sm">Join Now</Link>
+          </div>
+        </nav>
+      )}
 
       {/* Hero */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", damping: 25 }}
-        className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-20 text-center lg:pt-32"
+        className={`relative z-10 mx-auto max-w-4xl px-6 pb-16 text-center ${isAuthenticated ? 'pt-12' : 'pt-20 lg:pt-32'}`}
       >
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/50 bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" /> Now in Beta
@@ -74,14 +86,16 @@ export default function Explore() {
         <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground leading-relaxed">
           Find teammates, build real projects, and launch ventures — all while you're still in school.
         </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <Link to="/join" className="glow-button flex items-center gap-2 text-sm">
-            <Rocket className="h-4 w-4" /> Get Started
-          </Link>
-          <a href="#explore" className="glow-button-outline flex items-center gap-2 text-sm">
-            <Globe className="h-4 w-4" /> Explore
-          </a>
-        </div>
+        {!isAuthenticated && (
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <Link to="/join" className="glow-button flex items-center gap-2 text-sm">
+              <Rocket className="h-4 w-4" /> Get Started
+            </Link>
+            <a href="#explore" className="glow-button-outline flex items-center gap-2 text-sm">
+              <Globe className="h-4 w-4" /> Explore
+            </a>
+          </div>
+        )}
       </motion.section>
 
       {/* Public Projects */}
@@ -96,7 +110,7 @@ export default function Explore() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
                 viewport={{ once: true }}
-                onClick={() => navigate('/login')}
+                onClick={() => handleProjectClick(p.id)}
                 className="glass-card-hover group cursor-pointer overflow-hidden flex flex-col h-full"
               >
                 <div className={`h-32 bg-gradient-to-br ${cardGradients[i % cardGradients.length]} opacity-80 transition-opacity group-hover:opacity-100 flex items-center justify-center relative`}>
@@ -138,7 +152,8 @@ export default function Explore() {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
                   viewport={{ once: true }}
-                  className="glass-card-hover flex flex-col sm:flex-row sm:items-center sm:justify-between p-5 gap-4"
+                  className="glass-card-hover flex flex-col sm:flex-row sm:items-center sm:justify-between p-5 gap-4 cursor-pointer"
+                  onClick={() => handleProjectClick(p.id)}
                 >
                   <div className="min-w-0">
                     <h3 className="text-sm font-semibold text-foreground truncate">{p.title}</h3>
@@ -146,7 +161,7 @@ export default function Explore() {
                   </div>
                   <div className="flex items-center gap-3 justify-between sm:justify-end">
                     <span className="rounded-lg bg-primary/10 px-3 py-1 text-[10px] font-medium text-primary whitespace-nowrap">{openRole?.title || "Team Member"}</span>
-                    <Link to="/login" className="glow-button-outline px-3 py-1.5 text-xs whitespace-nowrap">Apply</Link>
+                    <button onClick={(e) => { e.stopPropagation(); handleProjectClick(p.id); }} className="glow-button-outline px-3 py-1.5 text-xs whitespace-nowrap">Apply</button>
                   </div>
                 </motion.div>
               );
@@ -156,9 +171,17 @@ export default function Explore() {
       )}
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-border/30 px-6 py-8 text-center text-xs text-muted-foreground">
-        © 2026 Stusil. Built for students, by students.
-      </footer>
+      {!isAuthenticated && (
+        <footer className="relative z-10 border-t border-border/30 px-6 py-8 text-center text-xs text-muted-foreground">
+          © 2026 Stusil. Built for students, by students.
+        </footer>
+      )}
     </div>
   );
+
+  if (isAuthenticated) {
+    return <AppLayout>{content}</AppLayout>;
+  }
+
+  return content;
 }
