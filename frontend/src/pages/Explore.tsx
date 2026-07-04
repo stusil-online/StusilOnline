@@ -1,25 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Sparkles, Rocket, Users, Globe, ArrowRight, ExternalLink,
-  Search, Eye, Heart, MessageCircle,
+  Search, Eye, Heart, MessageCircle, Code, Briefcase
 } from "lucide-react";
-
-const publicProjects = [
-  { id: 1, title: "AI Campus Navigator", author: "Sarah Chen", tags: ["AI", "Python"], likes: 24, desc: "ML-powered campus navigation.", color: "from-primary to-glow-secondary" },
-  { id: 2, title: "StudySwap", author: "Marcus Lee", tags: ["React", "Node.js"], likes: 41, desc: "Peer-to-peer skill exchange.", color: "from-blue-600 to-cyan-500" },
-  { id: 3, title: "Carbon Tracker", author: "Aisha Patel", tags: ["IoT", "Data"], likes: 18, desc: "Track campus carbon footprint.", color: "from-indigo-600 to-blue-500" },
-];
-
-const featuredProjects = [
-  { title: "EduFi — Student Micro-Lending", seeking: "Co-Founder (Business)", author: "Jake W." },
-  { title: "LabSync — Research Collab Tool", seeking: "Full-Stack Dev", author: "Nina K." },
-  { title: "FreshBites — Sustainable Food", seeking: "UX Designer", author: "Tom N." },
-];
+import { getApiData } from "@/lib/api";
 
 export default function Explore() {
   const navigate = useNavigate();
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await getApiData("/api/v1/projects");
+        if (Array.isArray(data)) {
+          setProjects(data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  const publicProjects = projects.slice(0, 6);
+  const featuredProjects = projects.filter(p => p.roles && p.roles.some((r: any) => !r.is_filled)).slice(0, 5);
+
+  const cardGradients = [
+    "from-blue-600 to-cyan-500",
+    "from-indigo-600 to-blue-500",
+    "from-primary to-glow-secondary",
+    "from-cyan-600 to-sky-500",
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,76 +82,78 @@ export default function Explore() {
             <Globe className="h-4 w-4" /> Explore
           </a>
         </div>
-
-        {/* Stats */}
-        <div className="mx-auto mt-16 grid max-w-md grid-cols-3 gap-8">
-          {[
-            { num: "500+", label: "Students" },
-            { num: "120+", label: "Projects" },
-            { num: "30+", label: "Ventures" },
-          ].map((s) => (
-            <div key={s.label}>
-              <p className="heading-tight text-2xl font-bold text-foreground">{s.num}</p>
-              <p className="text-xs text-muted-foreground">{s.label}</p>
-            </div>
-          ))}
-        </div>
       </motion.section>
 
       {/* Public Projects */}
       <section id="explore" className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         <h2 className="heading-tight mb-8 text-2xl font-bold text-foreground">Trending Projects</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {publicProjects.map((p, i) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
-              viewport={{ once: true }}
-              className="glass-card-hover group cursor-pointer overflow-hidden"
-            >
-              <div className={`h-32 bg-gradient-to-br ${p.color} opacity-80 transition-opacity group-hover:opacity-100`} />
-              <div className="p-5">
-                <h3 className="heading-tight text-lg font-semibold text-foreground">{p.title}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">by {p.author}</p>
-                <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span key={t} className="rounded-lg bg-secondary px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{t}</span>
-                  ))}
+        {publicProjects.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {publicProjects.map((p, i) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
+                viewport={{ once: true }}
+                onClick={() => navigate('/login')}
+                className="glass-card-hover group cursor-pointer overflow-hidden flex flex-col h-full"
+              >
+                <div className={`h-32 bg-gradient-to-br ${cardGradients[i % cardGradients.length]} opacity-80 transition-opacity group-hover:opacity-100 flex items-center justify-center relative`}>
+                   {p.banner_image ? (
+                      <img src={p.banner_image} className="h-full w-full object-cover absolute inset-0" />
+                   ) : (
+                      <Code className="h-12 w-12 text-white/30" />
+                   )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="heading-tight text-lg font-semibold text-foreground line-clamp-1">{p.title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground truncate">by {p.owner?.full_name || "Anonymous"}</p>
+                  <p className="mt-2 text-sm text-muted-foreground line-clamp-2 flex-1">{p.description}</p>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    <span className="rounded-lg bg-secondary px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{p.field}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-muted-foreground text-sm border-2 border-dashed border-border/50 rounded-3xl">
+            No projects available right now. Be the first to start one!
+          </div>
+        )}
       </section>
 
       {/* Featured Projects */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24">
-        <h2 className="heading-tight mb-8 text-2xl font-bold text-foreground">Featured Projects Looking for Members</h2>
-        <div className="space-y-3">
-          {featuredProjects.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
-              viewport={{ once: true }}
-              className="glass-card-hover flex flex-col sm:flex-row sm:items-center sm:justify-between p-5 gap-4"
-            >
-              <div className="min-w-0">
-                <h3 className="text-sm font-semibold text-foreground truncate">{s.title}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">by {s.author}</p>
-              </div>
-              <div className="flex items-center gap-3 justify-between sm:justify-end">
-                <span className="rounded-lg bg-primary/10 px-3 py-1 text-[10px] font-medium text-primary whitespace-nowrap">{s.seeking}</span>
-                <Link to="/join" className="glow-button-outline px-3 py-1.5 text-xs whitespace-nowrap">Apply</Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      {featuredProjects.length > 0 && (
+        <section className="relative z-10 mx-auto max-w-6xl px-6 pb-24">
+          <h2 className="heading-tight mb-8 text-2xl font-bold text-foreground">Featured Projects Looking for Members</h2>
+          <div className="space-y-3">
+            {featuredProjects.map((p, i) => {
+              const openRole = p.roles.find((r: any) => !r.is_filled);
+              return (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, type: "spring", damping: 25 }}
+                  viewport={{ once: true }}
+                  className="glass-card-hover flex flex-col sm:flex-row sm:items-center sm:justify-between p-5 gap-4"
+                >
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-foreground truncate">{p.title}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">by {p.owner?.full_name}</p>
+                  </div>
+                  <div className="flex items-center gap-3 justify-between sm:justify-end">
+                    <span className="rounded-lg bg-primary/10 px-3 py-1 text-[10px] font-medium text-primary whitespace-nowrap">{openRole?.title || "Team Member"}</span>
+                    <Link to="/login" className="glow-button-outline px-3 py-1.5 text-xs whitespace-nowrap">Apply</Link>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-border/30 px-6 py-8 text-center text-xs text-muted-foreground">
