@@ -181,17 +181,27 @@ export default function Event() {
                       </span>
                     </div>
                     
-                    <h3 className="font-black text-xl md:text-2xl text-foreground mb-3 transition-colors tracking-tight leading-tight">
+                    <h3 className="font-black text-xl md:text-2xl text-foreground mb-4 transition-colors tracking-tight leading-tight">
                       {ev.title}
                     </h3>
                     
-                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3 mb-6 font-medium pr-4">
-                      {ev.description}
-                    </p>
-                    
-                    <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground group-hover:translate-x-1 transition-transform">
-                      <span>View Results & Archives</span> <ArrowRight className="h-4 w-4" />
-                    </div>
+                    {ev.details?.winners_list && ev.details.winners_list.length > 0 ? (
+                      <div className="space-y-3 mt-4 pt-4 border-t border-border/30">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Hall of Fame</p>
+                        <div className="grid gap-2">
+                          {ev.details.winners_list.map((winner: any, i: number) => (
+                            <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-background/50 border border-border/50">
+                              <span className="text-xs font-black text-foreground">{winner.place}</span>
+                              <span className="text-xs font-medium text-muted-foreground">{winner.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground font-medium italic mt-2">
+                        Winners to be announced
+                      </p>
+                    )}
                   </Link>
                 ))}
                 
