@@ -174,9 +174,9 @@ const Index = () => {
       </div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10 p-1 md:p-0">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
-            <div className="relative">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 flex flex-row items-start md:items-center justify-between gap-4 md:gap-6">
+          <div className="flex items-center gap-4 md:gap-5">
+            <div className="relative shrink-0">
               <div className="h-16 w-16 overflow-hidden rounded-2xl border-2 border-primary/20 bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary uppercase shadow-2xl">
                 {user?.profile_image ? (
                   <img src={user.profile_image} className="h-full w-full object-cover" />
@@ -186,17 +186,17 @@ const Index = () => {
               </div>
               <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-background bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
             </div>
-            <div>
-              <h1 className="heading-tight text-3xl font-black text-foreground tracking-tight lg:text-4xl">
-                {user ? (user.full_name?.split('@')[0] || user.username?.split('@')[0]) : "Loading System..."}
+            <div className="min-w-0">
+              <h1 className="heading-tight text-2xl md:text-3xl font-black text-foreground tracking-tight lg:text-4xl truncate">
+                {user ? (user.full_name?.split('@')[0] || user.username?.split('@')[0]) : "Loading..."}
               </h1>
-              <p className="mt-1 text-sm font-medium text-muted-foreground">
+              <p className="mt-1 text-xs md:text-sm font-medium text-muted-foreground truncate">
                 Stay updated, {user ? (user.full_name?.split('@')[0].split(' ')[0] || user.username?.split('@')[0]) : "Innovator"}
               </p>
             </div>
           </div>
           
-          <div className="flex items-center gap-4 relative">
+          <div className="flex items-center gap-4 relative shrink-0">
              <div className="hidden md:flex items-center gap-3">
                 <div className="text-right">
                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Global Rank</p>
@@ -232,7 +232,7 @@ const Index = () => {
                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
                        animate={{ opacity: 1, y: 0, scale: 1 }}
                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                       className="absolute right-0 mt-3 w-80 md:w-96 rounded-2xl border border-border/50 bg-card/95 p-4 shadow-2xl backdrop-blur-xl z-40"
+                       className="absolute right-0 mt-3 w-[85vw] max-w-sm md:w-96 rounded-2xl border border-border/50 bg-card/95 p-4 shadow-2xl backdrop-blur-xl z-40"
                      >
                        <div className="flex items-center justify-between border-b border-border/30 pb-3 mb-3">
                          <span className="text-sm font-bold text-foreground">Notifications</span>

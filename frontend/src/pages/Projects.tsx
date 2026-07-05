@@ -833,10 +833,10 @@ export default function Projects() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="fixed inset-0 z-[80] flex items-center justify-center px-4 pointer-events-none"
             >
-              <div className="glass-card border border-border/50 shadow-2xl w-full max-w-4xl pointer-events-auto h-[85vh] flex flex-col md:flex-row overflow-hidden">
+              <div className="glass-card border border-border/50 shadow-2xl w-full max-w-4xl pointer-events-auto h-[85vh] flex flex-col md:flex-row overflow-hidden relative">
                 {/* Left Sidebar: List of Applicants */}
-                <div className="w-full md:w-1/3 border-b md:border-b-0 md:border-r border-border/30 flex flex-col h-1/3 md:h-full bg-secondary/10">
-                  <div className="p-4 border-b border-border/30 flex items-center justify-between">
+                <div className={`w-full md:w-1/3 border-b md:border-b-0 md:border-r border-border/30 flex-col h-full bg-secondary/10 ${selectedApp ? 'hidden md:flex' : 'flex'}`}>
+                  <div className="p-4 border-b border-border/30 flex items-center justify-between shrink-0">
                     <div>
                       <h2 className="text-sm font-bold text-foreground">Applicants</h2>
                       <p className="text-[10px] text-muted-foreground">{viewAppRole.title}</p>
@@ -858,14 +858,14 @@ export default function Projects() {
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary shrink-0">
+                            <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary shrink-0 overflow-hidden">
                               {app.user.profile_image ? (
-                                <img src={app.user.profile_image} className="h-full w-full rounded-full object-cover" />
+                                <img src={app.user.profile_image} className="h-full w-full object-cover" />
                               ) : (
                                 app.user.full_name.substring(0, 2).toUpperCase()
                               )}
                             </div>
-                            <div className="min-w-0">
+                            <div className="min-w-0 flex-1">
                               <p className="text-xs font-semibold text-foreground truncate">{app.user.full_name}</p>
                               <div className="flex items-center gap-2 mt-0.5">
                                 <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-tighter ${
@@ -876,6 +876,9 @@ export default function Projects() {
                                 <span className="text-[8px] text-muted-foreground">{new Date(app.created_at).toLocaleDateString()}</span>
                               </div>
                             </div>
+                            <div className="md:hidden shrink-0">
+                               <ChevronDown className="h-4 w-4 -rotate-90 text-muted-foreground" />
+                            </div>
                           </div>
                         </div>
                       ))
@@ -884,33 +887,38 @@ export default function Projects() {
                 </div>
 
                 {/* Right Content: Applicant Detail */}
-                <div className="flex-1 overflow-y-auto bg-background/50">
+                <div className={`flex-1 overflow-y-auto bg-background/50 ${!selectedApp ? 'hidden md:flex' : 'flex flex-col'}`}>
                   {selectedApp ? (
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-8">
-                        <div className="flex items-center gap-5">
-                          <div className="h-16 w-16 rounded-3xl bg-primary/15 border border-primary/20 flex items-center justify-center text-2xl font-black text-primary overflow-hidden">
-                             {selectedApp.user.profile_image ? (
-                                <img src={selectedApp.user.profile_image} className="h-full w-full object-cover" />
-                              ) : (
-                                selectedApp.user.full_name.substring(0, 2).toUpperCase()
-                              )}
-                          </div>
-                          <div>
-                            <h2 className="text-2xl font-bold text-foreground tracking-tight">{selectedApp.user.full_name}</h2>
-                            <p className="text-sm text-primary font-medium tracking-wide flex items-center gap-2">
-                              {selectedApp.user.field_of_study || "Student"} 
-                              <span className="h-1 w-1 rounded-full bg-muted" /> 
-                              {selectedApp.user.university || "Campus"}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-0.5">@{selectedApp.user.username}</p>
+                    <div className="p-4 md:p-6">
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
+                        <div className="flex items-center gap-4">
+                          <button onClick={() => setSelectedApp(null)} className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-border/50 bg-secondary/30 shrink-0">
+                             <ChevronDown className="h-4 w-4 rotate-90" />
+                          </button>
+                          <div className="flex items-center gap-4 md:gap-5">
+                            <div className="h-14 w-14 md:h-16 md:w-16 rounded-3xl bg-primary/15 border border-primary/20 flex items-center justify-center text-xl md:text-2xl font-black text-primary overflow-hidden shrink-0">
+                               {selectedApp.user.profile_image ? (
+                                  <img src={selectedApp.user.profile_image} className="h-full w-full object-cover" />
+                                ) : (
+                                  selectedApp.user.full_name.substring(0, 2).toUpperCase()
+                                )}
+                            </div>
+                            <div className="min-w-0">
+                              <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight truncate">{selectedApp.user.full_name}</h2>
+                              <p className="text-xs md:text-sm text-primary font-medium tracking-wide flex items-center gap-2 truncate">
+                                {selectedApp.user.field_of_study || "Student"} 
+                                <span className="h-1 w-1 rounded-full bg-muted shrink-0" /> 
+                                {selectedApp.user.university || "Campus"}
+                              </p>
+                              <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 truncate">@{selectedApp.user.username}</p>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="flex gap-2 items-center">
+                        <div className="flex flex-wrap gap-2 items-center">
                           <button 
                             onClick={() => window.open(`/u/${selectedApp.user.username}`, '_blank')}
-                            className="rounded-xl px-4 py-2 text-xs font-bold text-primary border border-primary/20 hover:bg-primary/10 transition-all font-sans"
+                            className="flex-1 md:flex-none rounded-xl px-4 py-2 text-xs font-bold text-primary border border-primary/20 hover:bg-primary/10 transition-all font-sans text-center"
                           >
                             View Profile
                           </button>
@@ -918,15 +926,15 @@ export default function Projects() {
                             <>
                               <button 
                                 onClick={() => handleAppAction(selectedApp.id, 'reject')}
-                                className="rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground border border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all"
+                                className="flex-1 md:flex-none rounded-xl px-4 py-2 text-xs font-bold text-muted-foreground border border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all text-center"
                               >
                                 Reject
                               </button>
                               <button 
                                 onClick={() => handleAppAction(selectedApp.id, 'accept')}
-                                className="glow-button !text-xs !py-2 !px-4"
+                                className="glow-button !text-xs !py-2 !px-4 flex-1 md:flex-none text-center"
                               >
-                                Accept Applicant
+                                Accept
                               </button>
                             </>
                           )}
