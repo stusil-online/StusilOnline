@@ -4,6 +4,8 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const hpp = require('hpp');
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const adminRoutes = require('./routes/admin');
@@ -16,6 +18,10 @@ const initSockets = require('./sockets');
 
 const app = express();
 app.set('trust proxy', 1);
+
+// Security Middlewares
+app.use(helmet());
+app.use(hpp());
 const server = http.createServer(app);
 
 // Sockets setup

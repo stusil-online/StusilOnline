@@ -282,19 +282,36 @@ export default function Projects() {
 
   const handleAppAction = async (applicationId: string, action: "accept" | "reject") => {
     if (!selected) return;
+    const loadingToast = toast.loading(`Processing ${action}...`);
     try {
       const res = await apiFetch(`/api/v1/projects/${selected.id}/applications/${applicationId}`, {
         method: "PUT",
         body: JSON.stringify({ action }),
       });
       if (res.ok) {
+        toast.success(`Application ${action}ed!`, { id: loadingToast });
         await fetchProjects();
         try {
           const data = await getApiData(`/api/v1/projects/${selected.id}`);
           setSelected(data);
+          if (viewAppRole) {
+             const updatedRole = data.roles?.find((r: any) => r.id === viewAppRole.id);
+             if (updatedRole) {
+               setViewAppRole(updatedRole);
+               if (selectedApp) {
+                 const updatedApp = updatedRole.applications?.find((a: any) => a.id === selectedApp.id);
+                 setSelectedApp(updatedApp || null);
+               }
+             }
+          }
         } catch { /* ignore refresh error */ }
+      } else {
+        toast.error(`Failed to ${action} application`, { id: loadingToast });
       }
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+      console.error(err);
+      toast.error(`Error processing application`, { id: loadingToast });
+    }
   };
 
   const handleRemoveMember = async (projectId: string, memberId: string) => {
@@ -661,7 +678,7 @@ export default function Projects() {
                                 <p className="text-[9px] font-bold text-muted-foreground uppercase">{m.role}</p>
                               </div>
                               {(selected.owner_id === user?.id && m.user.id !== user?.id) && (
-                                <button onClick={() => { setMemberToRemove({ projectId: selected.id, memberId: m.id }); setShowMemberRemoveConfirm(true); }} className="ml-2 h-6 w-6 rounded-lg bg-destructive/10 text-destructive flex items-center justify-center opacity-0 group-hover/mem:opacity-100 transition-opacity">
+                                <button onClick={(e) => { e.stopPropagation(); setMemberToRemove({ projectId: selected.id, memberId: m.id }); setShowMemberRemoveConfirm(true); }} className="ml-2 h-6 w-6 rounded-lg bg-destructive/10 text-destructive flex items-center justify-center opacity-0 group-hover/mem:opacity-100 transition-opacity">
                                   <Trash2 className="h-3 w-3" />
                                 </button>
                               )}

@@ -50,7 +50,7 @@ export default function PublicPortfolio() {
       if (!username) return;
 
       try {
-        const data = await getApiData(`/api/v1/portfolio/${username}`);
+        const data = await getApiData(`/api/v1/users/portfolio/${username}`);
         if (data) {
           const { user, portfolio, projects } = data;
 

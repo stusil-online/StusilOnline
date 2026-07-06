@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { getApiData, apiFetch } from "@/lib/api";
 
+import { toast } from "sonner";
+
 interface NotificationType {
   id: string;
   type: string;
@@ -337,7 +339,13 @@ const Index = () => {
                 {quickActions.map((action) => (
                   <button
                     key={action.label}
-                    onClick={() => navigate(action.path)}
+                    onClick={() => {
+                      if (action.path === "/messages") {
+                        toast.info("Messaging coming soon!");
+                      } else {
+                        navigate(action.path);
+                      }
+                    }}
                     className="group flex items-center justify-between rounded-xl border border-primary/15 ring-1 ring-primary/5 bg-white/30 backdrop-blur-md p-4 transition-all hover:border-primary/45 hover:bg-white/50 hover:translate-x-1 duration-300 shadow-sm"
                   >
                     <div className="flex items-center gap-3">
