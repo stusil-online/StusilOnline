@@ -332,9 +332,6 @@ export default function Landing() {
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-glow-secondary/10 rounded-full blur-[80px]" />
           <div className="relative z-10">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to build something amazing?</h2>
-            <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
-              Join thousands of university students who are turning their ideas into reality on Stusil.
-            </p>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -351,16 +348,10 @@ export default function Landing() {
       <footer className="border-t border-border/30 py-12 px-6 bg-card/30 text-sm">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-glow-secondary">
-              <Zap className="h-4 w-4 text-white" />
-            </div>
             <span className="text-xl font-bold tracking-tight">STUSIL</span>
           </div>
           <div className="flex items-center gap-6 text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">About</a>
-            <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-            <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="hover:text-foreground transition-colors">Contact</a>
+            <a href="mailto:stusil.online@gmail.com" className="hover:text-foreground transition-colors">Contact</a>
           </div>
           <div className="text-muted-foreground">
             &copy; {new Date().getFullYear()} Stusil. All rights reserved.

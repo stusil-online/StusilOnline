@@ -574,113 +574,10 @@ ${submission.description}`;
                       </button>
                     </div>
                   </div>
-                ) : (
-                  /* Form State */
-                  <form onSubmit={handleFormSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Team Name *</label>
-                        <input
-                          type="text"
-                          name="teamName"
-                          required
-                          placeholder="e.g. Innovators Africa"
-                          value={form.teamName}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Project Title *</label>
-                        <input
-                          type="text"
-                          name="projectName"
-                          required
-                          placeholder="e.g. Polaris Water Monitor"
-                          value={form.projectName}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Category Track *</label>
-                        <select
-                          name="category"
-                          value={form.category}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        >
-                          <option value="High School Track">High School Track (Ages 13-19)</option>
-                          <option value="General Track">General Public Track</option>
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Media Format *</label>
-                        <select
-                          name="submissionType"
-                          value={form.submissionType}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        >
-                          <option value="App Mockup">App Mockup / Design Prototype</option>
-                          <option value="Pitch Deck">Pitch Deck / Slide Pitch</option>
-                          <option value="Video explanation">Video Presentation (Loom/YouTube)</option>
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Pitch / Demo Link</label>
-                        <input
-                          type="url"
-                          name="demoUrl"
-                          placeholder="https://figma.com/..."
-                          value={form.demoUrl}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-foreground">Discord User (for Contact) *</label>
-                        <input
-                          type="text"
-                          name="discordUser"
-                          required
-                          placeholder="e.g. dev_johndoe#1234"
-                          value={form.discordUser}
-                          onChange={handleInputChange}
-                          className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-bold text-foreground">Pitch Summary & Solution Description *</label>
-                      <textarea
-                        name="description"
-                        required
-                        rows={4}
-                        placeholder="Explain: 1. What community problem is this solving? 2. How does your prototype work? 3. Why is it innovative?"
-                        value={form.description}
-                        onChange={handleInputChange}
-                        className="bg-secondary/40 border border-border/60 rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary/50 w-full"
-                      />
-                    </div>
-
-                    <button type="submit" disabled={saving} className="glow-button w-full flex items-center justify-center gap-2">
-                      {saving ? (
-                        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          <Send className="h-4 w-4" /> 
-                          <span>Submit Pitch</span>
-                        </>
-                      )}
-                    </button>
-                  </form>
+                ) : <div className="text-center py-12">
+                    <h3 className="text-xl font-bold mb-2">Submissions Closed</h3>
+                    <p className="text-muted-foreground">The submission period for this competition has ended.</p>
+                  </div>
                 )}
               </motion.div>
             ) : (
@@ -748,10 +645,9 @@ ${submission.description}`;
         <footer className="border-t border-border/60 pt-8 mt-8 text-center text-xs text-muted-foreground max-w-4xl mx-auto w-full px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="font-bold">STUSIL x POLARIS 2025</div>
           <div className="flex items-center gap-6 font-semibold">
-            <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-            <a href="#" className="hover:text-foreground transition-colors">Contact</a>
-            <a href="#" className="hover:text-foreground transition-colors">Instagram</a>
-            <a href="#" className="hover:text-foreground transition-colors">Discord</a>
+            <a href="mailto:stusil.online@gmail.com" className="hover:text-foreground transition-colors">Contact</a>
+            <a href="https://www.instagram.com/stusil.community?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="hover:text-foreground transition-colors">Instagram</a>
+            <a href="https://discord.com/invite/34bHeUqEG?fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGn1Y3zQ1v3TZ19Rl2YEtWhGF5UNJGFb5vXv5nBWe7NVeNwacGs7MuelP4XG-I_aem_KxcOEfnIRrRTgMD8QkdvxA" className="hover:text-foreground transition-colors">Discord</a>
           </div>
         </footer>
 

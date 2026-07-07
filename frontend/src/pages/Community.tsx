@@ -58,86 +58,9 @@ export default function Community() {
              </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Main Trending Projects Area */}
-            <div className="lg:col-span-8 space-y-8">
-              <section>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-8 w-8 rounded-xl bg-cyan-500/10 flex items-center justify-center">
-                    <Trophy className="h-4 w-4 text-cyan-600" />
-                  </div>
-                  <h2 className="text-xl font-bold text-foreground">Trending Projects</h2>
-                </div>
-
-                <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
-                  {trending.trendingProjects.map((p, i) => (
-                    <motion.div
-                      key={p.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.1 }}
-                      onClick={() => navigate('/projects')}
-                      className="group relative cursor-pointer"
-                    >
-                      <GlassCard className="h-full overflow-hidden p-0 border-cyan-500/20 glass-card-hover">
-                        <div className="relative h-48 w-full overflow-hidden">
-                          {p.banner_image ? (
-                            <img src={p.banner_image} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-3xl font-black text-primary/30">
-                              PRJ
-                            </div>
-                          )}
-                          <div className="absolute top-3 left-3 flex gap-2">
-                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white">
-                               <Eye className="h-3 w-3" /> {p.views}
-                             </div>
-                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500 text-[10px] font-bold text-white">
-                               <Star className="h-3 w-3 fill-current" /> {p.stars}
-                             </div>
-                          </div>
-                        </div>
-                        <div className="p-6">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-500 mb-2 block">{p.field}</span>
-                          <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-cyan-500 transition-colors line-clamp-1">{p.title}</h3>
-                          <div 
-                            className="flex items-center gap-2 mt-4 hover:opacity-80 transition-opacity cursor-pointer inline-flex"
-                            onClick={(e) => { e.stopPropagation(); navigate(`/u/${p.owner.username}`); }}
-                          >
-                             <div className="h-6 w-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
-                               {p.owner.full_name?.substring(0, 1) || "?"}
-                             </div>
-                             <span className="text-xs text-muted-foreground font-medium">by {p.owner.full_name}</span>
-                          </div>
-                        </div>
-                      </GlassCard>
-                    </motion.div>
-                  ))}
-                  {trending.trendingProjects.length === 0 && (
-                    <div className="col-span-full py-20 text-center border-2 border-dashed border-border/20 rounded-3xl text-muted-foreground">
-                      No trending projects yet. Be the first to star one!
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              {/* Bonus Graphic/Call to Action Area */}
-              <GlassCard className="p-8 bg-gradient-to-br from-primary/10 via-transparent to-cyan-500/10 border-primary/20 text-center overflow-hidden relative">
-                 <div className="absolute -top-10 -right-10 h-32 w-32 bg-primary/20 blur-[60px] rounded-full" />
-                 <div className="absolute -bottom-10 -left-10 h-32 w-32 bg-cyan-500/20 blur-[60px] rounded-full" />
-                 <Flame className="h-10 w-10 text-primary mx-auto mb-4 animate-pulse" />
-                 <h3 className="text-xl font-bold text-foreground mb-2">Build Your Legacy</h3>
-                 <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                   Every project starts with a single star. Get your teammates together and start building something that people talk about.
-                 </p>
-                 <button onClick={() => navigate('/projects')} className="glow-button flex items-center gap-2 mx-auto">
-                   <Plus className="h-4 w-4" /> Create Project
-                 </button>
-              </GlassCard>
-            </div>
-
-            {/* Sidebar: Hot Ideas & Community Pulse */}
-            <div className="lg:col-span-4 space-y-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Hot Ideas & Community Pulse */}
+            <div className="space-y-8">
               <section>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="h-8 w-8 rounded-xl bg-indigo-500/10 flex items-center justify-center">
