@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const dns = require('dns').promises;
 const prisma = require('../services/db');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/email');
 
@@ -12,6 +13,17 @@ exports.signup = async (req, res) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Please provide a valid email address' });
+    }
+
+    // Check that the email domain actually has mail servers
+    const emailDomain = email.split('@')[1];
+    try {
+      const mx = await dns.resolveMx(emailDomain);
+      if (!mx || mx.length === 0) {
+        return res.status(400).json({ error: 'Invalid email domain.' });
+      }
+    } catch {
+      return res.status(400).json({ error: 'Invalid email domain.' });
     }
 
     const existingUser = await prisma.user.findFirst({
@@ -73,6 +85,12 @@ exports.login = async (req, res) => {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
+    }
+
+    if (!user.is_verified) {
+      return res.status(403).json({
+        error: 'Please verify your email before logging in. Check your inbox.'
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
