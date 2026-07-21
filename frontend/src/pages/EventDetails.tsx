@@ -574,7 +574,8 @@ ${submission.description}`;
                       </button>
                     </div>
                   </div>
-                ) : <div className="text-center py-12">
+                ) : (
+                  <div className="text-center py-12">
                     <h3 className="text-xl font-bold mb-2">Submissions Closed</h3>
                     <p className="text-muted-foreground">The submission period for this competition has ended.</p>
                   </div>
