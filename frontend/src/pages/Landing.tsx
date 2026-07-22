@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ArrowRight, Code, Rocket, Users, Zap, Search, ShieldCheck, Sun, Moon, Sparkles, ChevronDown, Star, Globe, Award } from "lucide-react";
+import { ArrowRight, Code, Rocket, Users, Zap, Search, ShieldCheck, Sun, Moon, Sparkles, ChevronDown, Star, Globe, Award, ExternalLink } from "lucide-react";
 import { getApiData } from "@/lib/api";
 
 export default function Landing() {
@@ -124,6 +124,15 @@ export default function Landing() {
           <span className="text-xl font-bold tracking-tight uppercase tracking-widest text-foreground">STUSIL</span>
         </div>
         <div className="flex items-center gap-3">
+          <a
+            href="https://stusil.wixstudio.com/education-community"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium hover:text-primary transition-colors px-3.5 py-2 rounded-xl border border-border/50 hover:border-primary/30 flex items-center gap-1.5"
+          >
+            Wix Page
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
           <button onClick={() => navigate("/login")} className="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-xl border border-border/50 hover:border-primary/30">
             Login
           </button>
@@ -352,6 +361,15 @@ export default function Landing() {
           </div>
           <div className="flex items-center gap-6 text-muted-foreground">
             <a href="mailto:stusil.online@gmail.com" className="hover:text-foreground transition-colors">Contact</a>
+            <a
+              href="https://stusil.wixstudio.com/education-community"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              Wix Page
+              <ExternalLink className="h-3 w-3" />
+            </a>
           </div>
           <div className="text-muted-foreground">
             &copy; {new Date().getFullYear()} Stusil. All rights reserved.

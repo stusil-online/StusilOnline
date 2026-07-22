@@ -15,16 +15,7 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ error: 'Please provide a valid email address' });
     }
 
-    // Check that the email domain actually has mail servers
-    const emailDomain = email.split('@')[1];
-    try {
-      const mx = await dns.resolveMx(emailDomain);
-      if (!mx || mx.length === 0) {
-        return res.status(400).json({ error: 'Invalid email domain.' });
-      }
-    } catch {
-      return res.status(400).json({ error: 'Invalid email domain.' });
-    }
+    // DNS MX record check removed for reliability
 
     const existingUser = await prisma.user.findFirst({
       where: {
@@ -41,8 +32,6 @@ exports.signup = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
-    const verify_token = crypto.randomBytes(32).toString('hex');
-
     const newUser = await prisma.user.create({
       data: {
         email,
@@ -57,15 +46,9 @@ exports.signup = async (req, res) => {
         bio,
         profile_image,
         discord_username,
-        verify_token
+        is_verified: true
       }
     });
-
-    try {
-      await sendVerificationEmail(email, verify_token);
-    } catch (err) {
-      console.warn('Failed to send verification email during signup:', err);
-    }
 
 
 
@@ -87,11 +70,7 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    if (!user.is_verified) {
-      return res.status(403).json({
-        error: 'Please verify your email before logging in. Check your inbox.'
-      });
-    }
+
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {

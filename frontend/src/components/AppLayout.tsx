@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { CommandBar } from "./CommandBar";
-import { LogOut, Settings as SettingsIcon, LayoutDashboard, Rocket, Users, Target } from "lucide-react";
+import { LogOut, Settings as SettingsIcon, LayoutDashboard, Rocket, Users, Target, ExternalLink } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getApiData } from "@/lib/api";
 import { io } from "socket.io-client";
@@ -100,6 +100,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="fixed top-4 right-6 z-40 flex items-center gap-3 px-4.5 py-2 rounded-full border border-border/85 bg-background/80 backdrop-blur-md shadow-sm">
         {user ? (
           <div className="flex items-center gap-2.5">
+            <a
+              href="https://stusil.wixstudio.com/education-community"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-muted-foreground hover:text-primary transition-all hover:bg-secondary/60 px-3 py-1.5 rounded-full border border-border/50 flex items-center gap-1 mr-1"
+              title="Wix Page"
+            >
+              <span>Wix Page</span>
+              <ExternalLink className="h-3 w-3" />
+            </a>
             <button
               onClick={() => navigate('/settings')}
               className={`p-2 rounded-full transition-all text-muted-foreground hover:text-foreground hover:bg-secondary/60 ${location.pathname === '/settings' ? 'text-primary' : ''}`}
@@ -127,6 +137,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         ) : (
           <div className="flex items-center gap-3">
+            <a
+              href="https://stusil.wixstudio.com/education-community"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-muted-foreground hover:text-primary transition-all hover:bg-secondary/60 px-3 py-1.5 rounded-full border border-border/50 flex items-center gap-1 mr-1"
+              title="Wix Page"
+            >
+              <span>Wix Page</span>
+              <ExternalLink className="h-3 w-3" />
+            </a>
             <Link to="/login" className="text-sm font-bold text-muted-foreground hover:text-foreground px-2 py-1">Log In</Link>
             <Link to="/register" className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-bold shadow-md shadow-primary/25 hover:opacity-95">Sign Up</Link>
           </div>
