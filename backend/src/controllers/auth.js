@@ -98,9 +98,27 @@ exports.login = async (req, res) => {
 
 exports.getMe = async (req, res) => {
   try {
+    // Explicit field whitelist: never return credentials or secret tokens
+    // (password_hash, verify_token, reset_token, reset_expires) to the client.
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      include: {
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        full_name: true,
+        university: true,
+        field_of_study: true,
+        skill_level: true,
+        profile_image: true,
+        bio: true,
+        links: true,
+        country: true,
+        dob: true,
+        discord_username: true,
+        role: true,
+        is_verified: true,
+        created_at: true,
         _count: {
           select: { projects: true }
         }
