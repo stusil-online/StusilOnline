@@ -137,3 +137,39 @@ model Event {
 
   @@map("events")
 }
+
+enum OpportunityCategory {
+  scholarship
+  internship
+  competition
+  fellowship
+  grant
+  program
+  other
+}
+
+enum StudentLevel {
+  high_school
+  undergraduate
+  graduate
+  any
+}
+
+model Opportunity {
+  id               String               @id @default(uuid())
+  title            String
+  deadline         DateTime
+  category         OpportunityCategory
+  link             String
+  eligibility_notes String?
+  student_level    StudentLevel
+  is_remote        Boolean              @default(false)
+  is_global        Boolean              @default(false)
+  created_at       DateTime             @default(now())
+  updated_at       DateTime             @updatedAt
+
+  @@index([deadline])
+  @@index([category, deadline])
+  @@index([student_level, deadline])
+  @@map("opportunities")
+}

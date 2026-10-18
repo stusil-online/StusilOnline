@@ -4,6 +4,9 @@ const {
 } = require('../controllers/admin');
 const authMiddleware = require('../middleware/auth');
 const router = express.Router();
+const {
+  getAdminOpportunities, createOpportunity, updateOpportunity
+} = require('../controllers/opportunities');
 
 const prisma = require('../controllers/../services/db');
 
@@ -34,5 +37,8 @@ router.get('/projects', getAllProjects);
 router.delete('/users/:id', deleteUser);
 router.delete('/projects/:id', deleteProject);
 router.delete('/projects/:projectId/members/:memberId', removeProjectMember);
+router.get('/opportunities', getAdminOpportunities);
+router.post('/opportunities', createOpportunity);
+router.put('/opportunities/:id', updateOpportunity);
 
 module.exports = router;

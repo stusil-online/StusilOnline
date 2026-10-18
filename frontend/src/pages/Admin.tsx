@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import {
   Users, FolderOpen, Rocket, Shield,
   Ban, Search, Trash2, X, Sparkles, Activity,
-  Calendar, Plus, LogOut, ExternalLink, ChevronDown, Trophy
+  Calendar, Plus, LogOut, ExternalLink, ChevronDown, Trophy, Briefcase, Globe
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -35,11 +35,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Admin() {
-  const [tab, setTab] = useState<"overview" | "users" | "projects" | "events">("overview");
+  const [tab, setTab] = useState<"overview" | "users" | "projects" | "events" | "opportunities">("overview");
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
+  const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [opportunityForm, setOpportunityForm] = useState({
+    title: "", deadline: "", category: "scholarship", link: "", eligibility_notes: "",
+    student_level: "any", is_remote: false, is_global: false
+  });
+  const [isCreatingOpportunity, setIsCreatingOpportunity] = useState(false);
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
@@ -124,15 +130,17 @@ export default function Admin() {
     if (!token) return navigate("/login");
 
     try {
-      const [usersData, projectsData, eventsData] = await Promise.all([
+      const [usersData, projectsData, eventsData, opportunitiesData] = await Promise.all([
         getApiData("/api/v1/admin/users"),
         getApiData("/api/v1/admin/projects"),
-        getApiData("/api/v1/events")
+        getApiData("/api/v1/events"),
+        getApiData("/api/v1/admin/opportunities")
       ]);
 
       if (usersData) setUsers(usersData);
       if (projectsData) setProjects(projectsData);
       if (eventsData) setEvents(eventsData);
+      if (opportunitiesData) setOpportunities(opportunitiesData);
     } catch (err) {
       console.error("Error fetching admin data:", err);
     }
@@ -271,6 +279,33 @@ export default function Admin() {
       toast.error("Network error creating event");
     } finally {
       setIsCreatingEvent(false);
+    }
+  };
+
+  const handleCreateOpportunity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCreatingOpportunity(true);
+    try {
+      const res = await apiFetch("/api/v1/admin/opportunities", {
+        method: "POST",
+        body: JSON.stringify(opportunityForm)
+      });
+      const body = await res.json();
+      if (!res.ok) {
+        toast.error(body.error || "Failed to create opportunity");
+        return;
+      }
+      setOpportunities((current) => [...current, body].sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()));
+      setOpportunityForm({
+        title: "", deadline: "", category: "scholarship", link: "", eligibility_notes: "",
+        student_level: "any", is_remote: false, is_global: false
+      });
+      toast.success("Opportunity is live in the public feed");
+    } catch (err) {
+      console.error("Error creating opportunity:", err);
+      toast.error("Network error creating opportunity");
+    } finally {
+      setIsCreatingOpportunity(false);
     }
   };
 
@@ -422,7 +457,7 @@ export default function Admin() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-secondary/80 p-1.5 border border-border/80 backdrop-blur-md shadow-inner">
-              {(["overview", "users", "projects", "events"] as const).map((t) => (
+              {(["overview", "users", "projects", "events", "opportunities"] as const).map((t) => (
               <button
                 key={t}
                 onClick={() => { setTab(t as any); setSearch(""); }}
@@ -698,6 +733,78 @@ export default function Admin() {
                 <div className="p-12 text-center text-muted-foreground text-sm font-medium bg-secondary/10 border border-dashed border-border rounded-3xl">No ventures discovered.</div>
               )}
             </div>
+          </motion.div>
+        )}
+
+        {tab === "opportunities" && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+            <section className="h-fit rounded-2xl border border-border bg-card p-6">
+              <div className="mb-6 flex items-center gap-3 border-b border-border pb-4">
+                <Briefcase className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-bold">Create opportunity</h2>
+              </div>
+              <form onSubmit={handleCreateOpportunity} className="space-y-4">
+                <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                  Title
+                  <input required maxLength={200} value={opportunityForm.title} onChange={(e) => setOpportunityForm({ ...opportunityForm, title: e.target.value })} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground" />
+                </label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                    Deadline
+                    <input required type="date" min={new Date().toISOString().slice(0, 10)} value={opportunityForm.deadline} onChange={(e) => setOpportunityForm({ ...opportunityForm, deadline: e.target.value })} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground" />
+                  </label>
+                  <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                    Category
+                    <select value={opportunityForm.category} onChange={(e) => setOpportunityForm({ ...opportunityForm, category: e.target.value })} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground">
+                      {(["scholarship", "internship", "competition", "fellowship", "grant", "program", "other"]).map((value) => <option key={value} value={value}>{value[0].toUpperCase() + value.slice(1)}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                  Application link
+                  <input required type="url" placeholder="https://example.org/apply" value={opportunityForm.link} onChange={(e) => setOpportunityForm({ ...opportunityForm, link: e.target.value })} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground placeholder:text-muted-foreground" />
+                </label>
+                <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                  Student level
+                  <select value={opportunityForm.student_level} onChange={(e) => setOpportunityForm({ ...opportunityForm, student_level: e.target.value })} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground">
+                    <option value="any">Any student</option>
+                    <option value="high_school">High school</option>
+                    <option value="undergraduate">Undergraduate</option>
+                    <option value="graduate">Graduate</option>
+                  </select>
+                </label>
+                <label className="block space-y-1.5 text-xs font-bold uppercase text-muted-foreground">
+                  Eligibility notes
+                  <textarea rows={3} maxLength={5000} value={opportunityForm.eligibility_notes} onChange={(e) => setOpportunityForm({ ...opportunityForm, eligibility_notes: e.target.value })} className="w-full resize-y rounded-lg border border-border bg-background px-3 py-2.5 text-sm font-normal normal-case text-foreground" />
+                </label>
+                <div className="flex flex-wrap gap-x-6 gap-y-3">
+                  <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={opportunityForm.is_remote} onChange={(e) => setOpportunityForm({ ...opportunityForm, is_remote: e.target.checked })} className="h-4 w-4 accent-primary" /><Globe className="h-4 w-4 text-muted-foreground" /> Remote</label>
+                  <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" checked={opportunityForm.is_global} onChange={(e) => setOpportunityForm({ ...opportunityForm, is_global: e.target.checked })} className="h-4 w-4 accent-primary" /> Open globally</label>
+                </div>
+                <button type="submit" disabled={isCreatingOpportunity} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50">
+                  {isCreatingOpportunity ? "Saving..." : <><Plus className="h-4 w-4" /> Create and publish</>}
+                </button>
+              </form>
+            </section>
+
+            <section className="rounded-2xl border border-border bg-card">
+              <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Opportunity records</h2>
+                <span className="text-xs text-muted-foreground">{opportunities.length} total</span>
+              </div>
+              <div className="divide-y divide-border px-5">
+                {opportunities.map((opportunity) => (
+                  <article key={opportunity.id} className="flex flex-col justify-between gap-3 py-4 sm:flex-row sm:items-center">
+                    <div>
+                      <h3 className="font-semibold">{opportunity.title}</h3>
+                      <p className="mt-1 text-xs capitalize text-muted-foreground">{opportunity.category.replaceAll("_", " ")} · {new Date(opportunity.deadline).toLocaleDateString(undefined, { timeZone: "UTC" })} · {opportunity.student_level.replaceAll("_", " ")}</p>
+                    </div>
+                    <a href={opportunity.link} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-1 text-xs font-semibold text-primary hover:underline">Open link <ExternalLink className="h-3.5 w-3.5" /></a>
+                  </article>
+                ))}
+                {opportunities.length === 0 && <p className="py-10 text-center text-sm text-muted-foreground">No opportunities added yet.</p>}
+              </div>
+            </section>
           </motion.div>
         )}
 

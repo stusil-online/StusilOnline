@@ -13,6 +13,7 @@ const userRoutes = require('./routes/users');
 const notificationRoutes = require('./routes/notifications');
 const communityRoutes = require('./routes/community');
 const eventRoutes = require('./routes/events');
+const opportunityRoutes = require('./routes/opportunities');
 const connectionRoutes = require('./routes/connections');
 const initSockets = require('./sockets');
 
@@ -111,6 +112,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/community', communityRoutes);
 app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/opportunities', opportunityRoutes);
 app.use('/api/v1/connections', connectionRoutes);
 
 // Base route

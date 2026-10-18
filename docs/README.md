@@ -26,6 +26,14 @@ The Stusil backend is a Node.js API built using Express and Prisma.
     npm start
     ```
 
+4.  **Opportunities:**
+    Apply the opportunity schema migration and regenerate Prisma Client after pulling schema changes:
+    ```bash
+    npx prisma migrate deploy
+    npx prisma generate
+    ```
+    To add the sample development opportunities to the connected database, run `npm run seed` from `backend`.
+
 ## Features Summary
 
 *   **Auth (JWT & Bcrypt)** - Basic authentication for user registration/login.

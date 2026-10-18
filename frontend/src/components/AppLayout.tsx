@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { CommandBar } from "./CommandBar";
-import { LogOut, Settings as SettingsIcon, LayoutDashboard, Rocket, Users, Target, ExternalLink } from "lucide-react";
+import { LogOut, Settings as SettingsIcon, LayoutDashboard, Rocket, Users, Target, ExternalLink, Award } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getApiData } from "@/lib/api";
 import { io } from "socket.io-client";
@@ -11,6 +11,7 @@ const mainNavItems = [
   { label: "Projects", path: "/projects", icon: Rocket },
   { label: "Community", path: "/community", icon: Users },
   { label: "Event", path: "/event", icon: Target, isHighlight: true },
+  { label: "Opportunities", path: "/opportunities", icon: Award },
 ];
 
 export function AppLayout({ children }: { children: React.ReactNode }) {

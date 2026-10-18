@@ -22,6 +22,7 @@ import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Event from "./pages/Event";
 import EventDetails from "./pages/EventDetails";
+import Opportunities from "./pages/Opportunities";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/u/:username" element={<PublicPortfolio />} />
+          <Route path="/opportunities" element={<Opportunities />} />
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
